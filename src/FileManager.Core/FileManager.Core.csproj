@@ -1,0 +1,7 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <RootNamespace>FileManager.Core</RootNamespace>
+    </PropertyGroup>
+
+</Project>
