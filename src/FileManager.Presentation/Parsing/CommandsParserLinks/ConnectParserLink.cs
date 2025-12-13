@@ -1,15 +1,16 @@
 using FileManager.Core.Commands.CommandBuilders;
-using FileManager.Presentation.Parsing.CommandsParserLinks.ArgumentsParsing;
+using FileManager.Presentation.Parsing.CommandsParserLinks.CommandsArgumentsParsing;
+using FileManager.Presentation.Parsing.CommandsParserLinks.CommandsArgumentsParsing.CommandArgumentParseResults;
 
 namespace FileManager.Presentation.Parsing.CommandsParserLinks;
 
 public class ConnectParserLink : CommandParserLinkBase
 {
-    private readonly IArgumentParserLink<ConnectCommandBuilder> _argumentParserLink;
+    private readonly ICommandArgumentParserLink<ConnectCommandBuilder> _commandArgumentParserLink;
 
-    public ConnectParserLink(IArgumentParserLink<ConnectCommandBuilder> argumentParserLink)
+    public ConnectParserLink(ICommandArgumentParserLink<ConnectCommandBuilder> commandArgumentParserLink)
     {
-        _argumentParserLink = argumentParserLink;
+        _commandArgumentParserLink = commandArgumentParserLink;
     }
 
     public override CommandParseResult Parse(StringsStream stream)
@@ -17,7 +18,7 @@ public class ConnectParserLink : CommandParserLinkBase
         if (stream.Current == "connect")
         {
             var connectCommandBuilder = new ConnectCommandBuilder();
-            ArgumentParseResult result = _argumentParserLink.Parse(stream, connectCommandBuilder);
+            CommandArgumentParseResult result = _commandArgumentParserLink.Parse(stream, connectCommandBuilder);
 
             return result.Then();
         }

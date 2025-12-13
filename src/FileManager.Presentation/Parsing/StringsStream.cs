@@ -16,8 +16,10 @@ public class StringsStream
 
     public bool IsLast => _index == _strings.Length - 1;
 
-    public void MoveNext()
+    public string MoveNext()
     {
         _index++;
+
+        return _strings[_index];
     }
 }
