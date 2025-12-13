@@ -4,4 +4,8 @@
         <RootNamespace>FileManager.Presentation</RootNamespace>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\FileManager.Core\FileManager.Core.csproj" />
+    </ItemGroup>
+
 </Project>
