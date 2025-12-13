@@ -1,5 +1,5 @@
 using FileManager.Core.Commands.CommandBuilders;
-using FileManager.Core.Commands.ConnectModes;
+using FileManager.Core.Commands.CommandsAdditions.ConnectModes;
 using FileManager.Core.Errors;
 
 namespace FileManager.Presentation.Parsing.CommandsParserLinks.ArgumentsParsing.ArgumentsParserLinks.ConnectModeFlagParser;
