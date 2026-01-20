@@ -1,9 +1,8 @@
 using FileManager.Core.Commands.CommandBuilders;
 using FileManager.Core.Errors;
 using FileManager.Presentation.Parsing.CommandsParserLinks.CommandsArgumentsParsing.CommandArgumentParseResults;
-using FileManager.Presentation.Parsing.CommandsParserLinks.CommandsArgumentsParsing.CommandsArgumentsParserLinks;
 
-namespace FileManager.Presentation.Parsing.CommandsParserLinks.CommandsArgumentsParsing.ArgumentsParserLinks;
+namespace FileManager.Presentation.Parsing.CommandsParserLinks.CommandsArgumentsParsing.CommandsArgumentsParserLinks;
 
 public class ConnectAddressParserLink : CommandArgumentParserLinkBase<ConnectCommandBuilder>
 {
