@@ -1,12 +1,26 @@
-using FileManager.Core.Commands.CommandsAdditions.ConnectModes;
+using FileManager.Core.Commands.CommandsAdditions.ConnectModes.ConnectModeChoosing;
+using FileManager.Core.Commands.CommandsAdditions.ConnectModes.ConnectModeChoosing.ConnectModeChooserLinks;
+using FileManager.Core.Errors;
 
 namespace FileManager.Core.Commands.CommandBuilders;
 
 public class ConnectCommandBuilder : ICommandBuilder
 {
+    private readonly IConnectModeChooserLink _connectModeChooser;
+
     private string? _address;
 
-    private IConnectMode? _connectMode;
+    private string? _rawConnectMode;
+
+    public ConnectCommandBuilder(IConnectModeChooserLink connectModeChooser)
+    {
+        _connectModeChooser = connectModeChooser;
+    }
+
+    public ConnectCommandBuilder()
+    {
+        _connectModeChooser = new LocalConnectModeChooserLink();
+    }
 
     public ConnectCommandBuilder WithAddress(string address)
     {
@@ -15,22 +29,32 @@ public class ConnectCommandBuilder : ICommandBuilder
         return this;
     }
 
-    public ConnectCommandBuilder WithMode(IConnectMode connectMode)
+    public ConnectCommandBuilder WithMode(string rawConnectMode)
     {
-        _connectMode = connectMode;
+        _rawConnectMode = rawConnectMode;
 
         return this;
     }
 
-    public ICommand Build()
+    public CommandBuildResult Build()
     {
-        if (_connectMode == null)
+        if (_address == null)
         {
-            throw new Exception("Connect Mode is null");
+            return new CommandBuildResult.Failure(new BuildingError("Connect address is null"));
         }
 
-        _connectMode.Path = _address ?? throw new Exception("Address is null");
+        ConnectModeChoiceResult modeChoiceResult = _connectModeChooser.Choose(_rawConnectMode);
 
-        return new ConnectCommand(_connectMode);
+        if (modeChoiceResult is ConnectModeChoiceResult.Failure(var error))
+        {
+            return new CommandBuildResult.Failure(new BuildingError(error.Info));
+        }
+
+        if (modeChoiceResult is ConnectModeChoiceResult.Success(var connectMode))
+        {
+            return new CommandBuildResult.Success(new ConnectCommand(connectMode, _address));
+        }
+
+        return new CommandBuildResult.Failure(new BuildingError("Unknown connect command building error"));
     }
 }

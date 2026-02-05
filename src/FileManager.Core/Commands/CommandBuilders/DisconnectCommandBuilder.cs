@@ -2,8 +2,8 @@ namespace FileManager.Core.Commands.CommandBuilders;
 
 public class DisconnectCommandBuilder : ICommandBuilder
 {
-    public ICommand Build()
+    public CommandBuildResult Build()
     {
-        return new DisconnectCommand();
+        return new CommandBuildResult.Success(new DisconnectCommand());
     }
 }

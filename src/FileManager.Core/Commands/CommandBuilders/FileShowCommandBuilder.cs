@@ -1,4 +1,5 @@
 using FileManager.Core.Commands.CommandsAdditions.FileShowing;
+using FileManager.Core.Errors;
 
 namespace FileManager.Core.Commands.CommandBuilders;
 
@@ -21,13 +22,14 @@ public class FileShowCommandBuilder : ICommandBuilder
         return this;
     }
 
-    public ICommand Build()
+    public CommandBuildResult Build()
     {
         if (_fileWriter is null || _path is null)
         {
-            throw new InvalidOperationException("You must call WithPath or WithFileWriter first");
+            return new CommandBuildResult.Failure(
+                new BuildingError("You must call WithPath or WithFileWriter first"));
         }
 
-        return new FileShowCommand(_fileWriter, _path);
+        return new CommandBuildResult.Success(new FileShowCommand(_fileWriter, _path));
     }
 }

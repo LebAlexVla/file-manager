@@ -8,9 +8,10 @@ public class ConnectCommand : ICommand
 {
     private readonly IConnectMode _connectMode;
 
-    public ConnectCommand(IConnectMode connectMode)
+    public ConnectCommand(IConnectMode connectMode, string address)
     {
         _connectMode = connectMode;
+        _connectMode.Path = address;
     }
 
     public CommandResult Execute(IFileSystem? fileSystem, string? currentDirectory)

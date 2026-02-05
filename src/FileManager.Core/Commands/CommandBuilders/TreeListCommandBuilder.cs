@@ -1,4 +1,5 @@
 using FileManager.Core.Commands.CommandsAdditions.TreeDrawing;
+using FileManager.Core.Errors;
 
 namespace FileManager.Core.Commands.CommandBuilders;
 
@@ -21,13 +22,14 @@ public class TreeListCommandBuilder : ICommandBuilder
         return this;
     }
 
-    public ICommand Build()
+    public CommandBuildResult Build()
     {
         if (_drawer == null)
         {
-            throw new InvalidOperationException("You must call WithDrawer or WithDepth first");
+            return new CommandBuildResult.Failure(
+                new BuildingError("You must call WithDrawer or WithDepth first"));
         }
 
-        return new TreeListCommand(_drawer, _depth);
+        return new CommandBuildResult.Success(new TreeListCommand(_drawer, _depth));
     }
 }

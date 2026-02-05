@@ -2,13 +2,13 @@ using FileManager.Core.Commands.CommandBuilders;
 using FileManager.Core.Errors;
 using FileManager.Presentation.Parsing.CommandsParserLinks.CommandsArgumentsParsing.CommandArgumentParseResults;
 
-namespace FileManager.Presentation.Parsing.CommandsParserLinks.CommandsArgumentsParsing.CommandsArgumentsParserLinks;
+namespace FileManager.Presentation.Parsing.CommandsParserLinks.CommandsArgumentsParsing.CommandsArgumentsParserLinks.ConnectArgumentsParserLinks;
 
 public class ConnectAddressParserLink : CommandArgumentParserLinkBase<ConnectCommandBuilder>
 {
     public override CommandArgumentParseResult Parse(StringsStream stream, ConnectCommandBuilder commandBuilder)
     {
-        if (stream.IsLast)
+        if (!stream.IsLast)
         {
             return new CommandArgumentParseResult.Failure(new ParsingError("No connect path"));
         }
@@ -17,8 +17,6 @@ public class ConnectAddressParserLink : CommandArgumentParserLinkBase<ConnectCom
 
         commandBuilder.WithAddress(stream.Current);
 
-        return stream.IsLast
-                ? new CommandArgumentParseResult.Success(commandBuilder)
-                : CallNext(stream, commandBuilder);
+        return CallNext(stream, commandBuilder);
     }
 }

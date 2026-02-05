@@ -1,3 +1,5 @@
+using FileManager.Core.Errors;
+
 namespace FileManager.Core.Commands.CommandBuilders;
 
 public class TreeGotoCommandBuilder : ICommandBuilder
@@ -11,13 +13,13 @@ public class TreeGotoCommandBuilder : ICommandBuilder
         return this;
     }
 
-    public ICommand Build()
+    public CommandBuildResult Build()
     {
         if (string.IsNullOrEmpty(_path))
         {
-            throw new Exception("Path cannot be null or empty");
+            return new CommandBuildResult.Failure(new BuildingError("Path cannot be null or empty"));
         }
 
-        return new TreeGotoCommand(_path);
+        return new CommandBuildResult.Success(new TreeGotoCommand(_path));
     }
 }
