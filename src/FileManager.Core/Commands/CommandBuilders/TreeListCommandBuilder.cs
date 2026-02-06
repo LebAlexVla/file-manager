@@ -6,7 +6,7 @@ namespace FileManager.Core.Commands.CommandBuilders;
 public class TreeListCommandBuilder : ICommandBuilder
 {
     private IDrawer? _drawer;
-    private int _depth;
+    private string? _rawDepth;
 
     public TreeListCommandBuilder WithDrawer(IDrawer drawer)
     {
@@ -15,9 +15,9 @@ public class TreeListCommandBuilder : ICommandBuilder
         return this;
     }
 
-    public TreeListCommandBuilder WithDepth(int depth)
+    public TreeListCommandBuilder WithDepth(string rawDepth)
     {
-        _depth = depth;
+        _rawDepth = rawDepth;
 
         return this;
     }
@@ -27,9 +27,21 @@ public class TreeListCommandBuilder : ICommandBuilder
         if (_drawer == null)
         {
             return new CommandBuildResult.Failure(
-                new BuildingError("You must call WithDrawer or WithDepth first"));
+                new BuildingError("You must call WithDrawer first"));
         }
 
-        return new CommandBuildResult.Success(new TreeListCommand(_drawer, _depth));
+        if (_rawDepth == null)
+        {
+            return new CommandBuildResult.Failure(
+                new BuildingError("You must call WithDepth first"));
+        }
+
+        int depth;
+        if (!int.TryParse(_rawDepth, out depth))
+        {
+            return new CommandBuildResult.Failure(new BuildingError("Wrong depth"));
+        }
+
+        return new CommandBuildResult.Success(new TreeListCommand(_drawer, depth));
     }
 }
