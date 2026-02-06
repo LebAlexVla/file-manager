@@ -8,13 +8,6 @@ public class ConnectModeFlagParserLink : CommandArgumentParserLinkBase<ConnectCo
 {
     public override CommandArgumentParseResult Parse(StringsStream stream, ConnectCommandBuilder commandBuilder)
     {
-        if (!stream.IsLast)
-        {
-            return new CommandArgumentParseResult.Success(commandBuilder);
-        }
-
-        stream.MoveNext();
-
         if (stream.Current == "-m")
         {
             if (stream.IsLast)
@@ -22,7 +15,7 @@ public class ConnectModeFlagParserLink : CommandArgumentParserLinkBase<ConnectCo
                 return new CommandArgumentParseResult.Failure(new ParsingError("Lonely flag -m"));
             }
 
-            commandBuilder.WithMode(stream.MoveNext());
+            return new CommandArgumentParseResult.Success(commandBuilder.WithMode(stream.MoveNext()));
         }
 
         return CallNext(stream, commandBuilder);

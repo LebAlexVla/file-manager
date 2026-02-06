@@ -6,11 +6,11 @@ namespace FileManager.Presentation.Parsing.CommandsParserLinks;
 
 public class ConnectParserLink : CommandParserLinkBase
 {
-    private readonly ICommandArgumentParserLink<ConnectCommandBuilder> _commandArgumentParserLink;
+    private readonly ICommandArgumentParserLink<ConnectCommandBuilder> _argumentsParserLink;
 
     public ConnectParserLink(ICommandArgumentParserLink<ConnectCommandBuilder> commandArgumentParserLink)
     {
-        _commandArgumentParserLink = commandArgumentParserLink;
+        _argumentsParserLink = commandArgumentParserLink;
     }
 
     public override CommandParseResult Parse(StringsStream stream)
@@ -18,9 +18,9 @@ public class ConnectParserLink : CommandParserLinkBase
         if (stream.Current == "connect")
         {
             var connectCommandBuilder = new ConnectCommandBuilder();
-            CommandArgumentParseResult result = _commandArgumentParserLink.Parse(stream, connectCommandBuilder);
+            CommandArgumentParseResult result = _argumentsParserLink.Parse(stream, connectCommandBuilder);
 
-            return result.Then();
+            return result.ThenCommand();
         }
 
         return CallNext(stream);

@@ -1,3 +1,4 @@
+using FileManager.Core.Errors;
 using FileManager.Presentation.Parsing.CommandsParserLinks.SubCommandsParsing;
 using FileManager.Presentation.Parsing.CommandsParserLinks.SubCommandsParsing.SubCommandParseResults;
 
@@ -16,6 +17,14 @@ public class TreeCommandsParserLink : CommandParserLinkBase
     {
         if (stream.Current == "tree")
         {
+            if (stream.IsLast)
+            {
+                return new CommandParseResult.Failure(
+                    new ParsingError("Lonely tree command"));
+            }
+
+            stream.MoveNext();
+
             return _subCommandParserLink.Parse(stream).Then();
         }
 

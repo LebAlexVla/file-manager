@@ -1,4 +1,5 @@
 using FileManager.Core.Errors;
+using FileManager.Presentation.Parsing.CommandsParserLinks.SubCommandsParsing.SubCommandParseResults;
 
 namespace FileManager.Presentation.Parsing.CommandsParserLinks.CommandsArgumentsParsing.CommandArgumentParseResults;
 
@@ -8,7 +9,7 @@ public static class CommandArgumentParseResultExtensions
 
     private const string UnknownError = "Unknown error";
 
-    public static CommandParseResult Then(this CommandArgumentParseResult result)
+    public static CommandParseResult ThenCommand(this CommandArgumentParseResult result)
     {
         if (result is CommandArgumentParseResult.Success(var commandBuilder))
         {
@@ -21,5 +22,20 @@ public static class CommandArgumentParseResultExtensions
         }
 
         return new CommandParseResult.Failure(new ParsingError(UnknownError));
+    }
+
+    public static SubCommandParseResult ThenSubCommand(this CommandArgumentParseResult result)
+    {
+        if (result is CommandArgumentParseResult.Success(var commandBuilder))
+        {
+            return new SubCommandParseResult.Success(commandBuilder);
+        }
+
+        if (result is CommandArgumentParseResult.Failure(var error))
+        {
+            return new SubCommandParseResult.Failure(new ParsingError(Context + error.Info));
+        }
+
+        return new SubCommandParseResult.Failure(new ParsingError(UnknownError));
     }
 }

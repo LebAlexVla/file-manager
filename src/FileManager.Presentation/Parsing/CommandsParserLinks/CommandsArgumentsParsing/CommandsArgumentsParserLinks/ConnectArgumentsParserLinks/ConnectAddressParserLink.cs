@@ -10,12 +10,17 @@ public class ConnectAddressParserLink : CommandArgumentParserLinkBase<ConnectCom
     {
         if (!stream.IsLast)
         {
-            return new CommandArgumentParseResult.Failure(new ParsingError("No connect path"));
+            return new CommandArgumentParseResult.Failure(new ParsingError("No connect address"));
+        }
+
+        commandBuilder.WithAddress(stream.MoveNext());
+
+        if (stream.IsLast)
+        {
+            return new CommandArgumentParseResult.Success(commandBuilder);
         }
 
         stream.MoveNext();
-
-        commandBuilder.WithAddress(stream.Current);
 
         return CallNext(stream, commandBuilder);
     }
