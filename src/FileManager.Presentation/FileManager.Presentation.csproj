@@ -8,8 +8,4 @@
       <ProjectReference Include="..\FileManager.Core\FileManager.Core.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Parsing\CommandsParserLinks\SubCommandsParsing\FileSubCommandsParsing\" />
-    </ItemGroup>
-
 </Project>
