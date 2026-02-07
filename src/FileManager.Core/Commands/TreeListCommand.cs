@@ -1,4 +1,6 @@
-using FileManager.Core.Commands.CommandsAdditions.TreeDrawing;
+using FileManager.Core.Commands.CommandsAdditions.TreeDrawing.FileSystemComponentVisitors;
+using FileManager.Core.Commands.CommandsAdditions.TreeDrawing.TreeAssembler;
+using FileManager.Core.Commands.CommandsAdditions.Writing;
 using FileManager.Core.Errors;
 using FileManager.Core.FileSystems;
 
@@ -6,13 +8,16 @@ namespace FileManager.Core.Commands;
 
 public class TreeListCommand : ICommand
 {
-    private readonly IDrawer _drawer;
+    private readonly ITreeAssembler _treeAssembler;
+
+    private readonly IWriter _writer;
 
     private readonly int _depth;
 
-    public TreeListCommand(IDrawer drawer, int depth)
+    public TreeListCommand(ITreeAssembler treeAssembler, IWriter writer, int depth)
     {
-        _drawer = drawer;
+        _treeAssembler = treeAssembler;
+        _writer = writer;
         _depth = depth;
     }
 
@@ -23,11 +28,10 @@ public class TreeListCommand : ICommand
             return new CommandResult.Failure(new ExecutingError("Problems with file system or current directory"));
         }
 
-        for (int i = 0; i < _depth; i++)
-        {
-            _drawer.DrawIndent();
-        }
+        var treeVisitor = new FileSystemComponentVisitor(_depth, fileSystem, _treeAssembler);
+        string text = _treeAssembler.GetResult();
+        _writer.Write(text);
 
-        return new CommandResult.Failure(new ExecutingError("Not implemented yet"));
+        return new CommandResult.Success();
     }
 }

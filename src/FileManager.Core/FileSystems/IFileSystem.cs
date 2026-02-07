@@ -10,5 +10,9 @@ public interface IFileSystem
 
     string? GetFileName(string path);
 
+    IEnumerable<string> EnumerateDirectories(string path);
+
+    IEnumerable<string> EnumerateFiles(string path);
+
     string? ReadFile(string path);
 }

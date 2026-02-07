@@ -20,12 +20,22 @@ public class LocalFileSystem : IFileSystem
 
     public string? GetDirectoryName(string path)
     {
-        throw new NotImplementedException();
+        return Path.GetDirectoryName(path);
     }
 
     public string? GetFileName(string path)
     {
-        throw new NotImplementedException();
+        return Path.GetFileName(path);
+    }
+
+    public IEnumerable<string> EnumerateDirectories(string path)
+    {
+        return Directory.EnumerateDirectories(path);
+    }
+
+    public IEnumerable<string> EnumerateFiles(string path)
+    {
+        return Directory.EnumerateFiles(path);
     }
 
     public string? ReadFile(string path)
