@@ -1,26 +1,13 @@
-using FileManager.Core.Commands.CommandsAdditions.ConnectModes.ConnectModeChoosing;
-using FileManager.Core.Commands.CommandsAdditions.ConnectModes.ConnectModeChoosing.ConnectModeChooserLinks;
+using FileManager.Core.Commands.CommandsAdditions.ConnectModes;
 using FileManager.Core.Errors;
 
 namespace FileManager.Core.Commands.CommandBuilders;
 
 public class ConnectCommandBuilder : ICommandBuilder
 {
-    private readonly IConnectModeChooserLink _connectModeChooser;
-
     private string? _address;
 
-    private string? _rawConnectMode;
-
-    public ConnectCommandBuilder(IConnectModeChooserLink connectModeChooser)
-    {
-        _connectModeChooser = connectModeChooser;
-    }
-
-    public ConnectCommandBuilder()
-    {
-        _connectModeChooser = new LocalConnectModeChooserLink();
-    }
+    private IConnectMode? _connectMode;
 
     public ConnectCommandBuilder WithAddress(string address)
     {
@@ -29,9 +16,9 @@ public class ConnectCommandBuilder : ICommandBuilder
         return this;
     }
 
-    public ConnectCommandBuilder WithMode(string rawConnectMode)
+    public ConnectCommandBuilder WithMode(IConnectMode connectMode)
     {
-        _rawConnectMode = rawConnectMode;
+        _connectMode = connectMode;
 
         return this;
     }
@@ -43,18 +30,11 @@ public class ConnectCommandBuilder : ICommandBuilder
             return new CommandBuildResult.Failure(new BuildingError("Connect address is null"));
         }
 
-        ConnectModeChoiceResult modeChoiceResult = _connectModeChooser.Choose(_rawConnectMode);
-
-        if (modeChoiceResult is ConnectModeChoiceResult.Failure(var error))
+        if (_connectMode == null)
         {
-            return new CommandBuildResult.Failure(new BuildingError(error.Info));
+            return new CommandBuildResult.Failure(new BuildingError("Connect mode is null"));
         }
 
-        if (modeChoiceResult is ConnectModeChoiceResult.Success(var connectMode))
-        {
-            return new CommandBuildResult.Success(new ConnectCommand(connectMode, _address));
-        }
-
-        return new CommandBuildResult.Failure(new BuildingError("Unknown connect command building error"));
+        return new CommandBuildResult.Success(new ConnectCommand(_connectMode, _address));
     }
 }
