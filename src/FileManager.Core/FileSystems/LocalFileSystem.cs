@@ -42,4 +42,25 @@ public class LocalFileSystem : IFileSystem
     {
         return File.Exists(path) ? File.ReadAllText(path) : null;
     }
+
+    public void MoveFile(string sourcePath, string destinationPath)
+    {
+        File.Move(sourcePath, destinationPath);
+    }
+
+    public void CopyFile(string sourcePath, string destinationPath)
+    {
+        File.Copy(sourcePath, destinationPath);
+    }
+
+    public void DeleteFile(string path)
+    {
+        File.Delete(path);
+    }
+
+    public void RenameFile(string path, string name)
+    {
+        string newPath = UpdatePath(path, name);
+        File.Move(path, newPath);
+    }
 }

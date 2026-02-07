@@ -1,4 +1,4 @@
-using FileManager.Core.Commands.CommandsAdditions.FileShowing;
+using FileManager.Core.Commands.CommandsAdditions.Writing;
 using FileManager.Core.Errors;
 using FileManager.Core.FileSystems;
 
@@ -6,12 +6,12 @@ namespace FileManager.Core.Commands;
 
 public class FileShowCommand : ICommand
 {
-    private readonly IFileWriter _fileWriter;
+    private readonly IWriter _writer;
     private readonly string _path;
 
-    public FileShowCommand(IFileWriter fileWriter, string path)
+    public FileShowCommand(IWriter writer, string path)
     {
-        _fileWriter = fileWriter;
+        _writer = writer;
         _path = path;
     }
 
@@ -29,7 +29,7 @@ public class FileShowCommand : ICommand
             return new CommandResult.Failure(new ExecutingError("No content"));
         }
 
-        _fileWriter.Write(content);
+        _writer.Write(content);
 
         return new CommandResult.Success();
     }

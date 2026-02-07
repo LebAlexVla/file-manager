@@ -15,4 +15,12 @@ public interface IFileSystem
     IEnumerable<string> EnumerateFiles(string path);
 
     string? ReadFile(string path);
+
+    void MoveFile(string sourcePath, string destinationPath);
+
+    void CopyFile(string sourcePath, string destinationPath);
+
+    void DeleteFile(string path);
+
+    void RenameFile(string path, string name);
 }
