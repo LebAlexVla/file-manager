@@ -2,7 +2,7 @@ using FileManager.Core.Commands.CommandBuilders;
 using FileManager.Core.Errors;
 using FileManager.Presentation.Parsing.CommandsParserLinks.CommandsArgumentsParsing.CommandArgumentParseResults;
 
-namespace FileManager.Presentation.Parsing.CommandsParserLinks.CommandsArgumentsParsing.CommandsArgumentsParserLinks.TreeSubcommandsArgumentsParserLinks.FileShowArgumentsParserLinks;
+namespace FileManager.Presentation.Parsing.CommandsParserLinks.CommandsArgumentsParsing.CommandsArgumentsParserLinks.FileSubcommandsArgumentsParserLinks.FileShowArgumentsParserLinks;
 
 public class FileShowPathParserLink : CommandArgumentParserLinkBase<FileShowCommandBuilder>
 {
