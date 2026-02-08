@@ -23,8 +23,6 @@ public class TreeCommandsParserLink : CommandParserLinkBase
                     new ParsingError("Lonely tree command"));
             }
 
-            stream.MoveNext();
-
             return _subCommandParserLink.Parse(stream).Then();
         }
 

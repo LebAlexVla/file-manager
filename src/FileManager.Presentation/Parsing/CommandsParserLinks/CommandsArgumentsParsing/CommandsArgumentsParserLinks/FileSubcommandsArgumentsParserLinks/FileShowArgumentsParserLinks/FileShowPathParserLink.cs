@@ -8,7 +8,7 @@ public class FileShowPathParserLink : CommandArgumentParserLinkBase<FileShowComm
 {
     public override CommandArgumentParseResult Parse(StringsStream stream, FileShowCommandBuilder commandBuilder)
     {
-        if (!stream.IsLast)
+        if (stream.IsLast)
         {
             return new CommandArgumentParseResult.Failure(new ParsingError("No file show path"));
         }

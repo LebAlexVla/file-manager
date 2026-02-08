@@ -1,5 +1,3 @@
-using FileManager.Core.Errors;
-
 namespace FileManager.Core.Commands.CommandBuilders;
 
 public class FileRenameCommandBuilder : ICommandBuilder
@@ -21,14 +19,13 @@ public class FileRenameCommandBuilder : ICommandBuilder
         return this;
     }
 
-    public CommandBuildResult Build()
+    public ICommand Build()
     {
         if (_path is null || _name is null)
         {
-            return new CommandBuildResult.Failure(
-                new BuildingError("You must call WithPath or WithName first"));
+            throw new ArgumentNullException();
         }
 
-        return new CommandBuildResult.Success(new FileRenameCommand(_path, _name));
+        return new FileRenameCommand(_path, _name);
     }
 }

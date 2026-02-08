@@ -26,7 +26,12 @@ public class FileShowModeFlagParserLink : CommandArgumentParserLinkBase<FileShow
             FileShowModeParseResult result = _fileShowModeParserLink.Parse(stream.MoveNext());
             if (result is FileShowModeParseResult.Success(var fileShowMode))
             {
-                return new CommandArgumentParseResult.Success(commandBuilder.WithFileWriter(fileShowMode));
+                commandBuilder.WithFileWriter(fileShowMode);
+            }
+
+            if (stream.IsLast)
+            {
+                return new CommandArgumentParseResult.Success(commandBuilder);
             }
 
             if (result is FileShowModeParseResult.Failure(var error))

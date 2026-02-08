@@ -1,5 +1,3 @@
-using FileManager.Core.Errors;
-
 namespace FileManager.Core.Commands.CommandBuilders;
 
 public class FileCopyCommandBuilder : ICommandBuilder
@@ -21,14 +19,13 @@ public class FileCopyCommandBuilder : ICommandBuilder
         return this;
     }
 
-    public CommandBuildResult Build()
+    public ICommand Build()
     {
         if (_sourcePath is null || _destinationPath is null)
         {
-            return new CommandBuildResult.Failure(
-                new BuildingError("You must call WithSourcePath or WithDestinationPath first"));
+            throw new ArgumentNullException();
         }
 
-        return new CommandBuildResult.Success(new FileCopyCommand(_sourcePath, _destinationPath));
+        return new FileCopyCommand(_sourcePath, _destinationPath);
     }
 }

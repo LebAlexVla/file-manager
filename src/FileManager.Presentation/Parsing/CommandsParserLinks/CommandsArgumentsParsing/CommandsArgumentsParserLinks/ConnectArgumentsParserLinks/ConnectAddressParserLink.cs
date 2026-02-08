@@ -8,19 +8,12 @@ public class ConnectAddressParserLink : CommandArgumentParserLinkBase<ConnectCom
 {
     public override CommandArgumentParseResult Parse(StringsStream stream, ConnectCommandBuilder commandBuilder)
     {
-        if (!stream.IsLast)
+        if (stream.IsLast)
         {
             return new CommandArgumentParseResult.Failure(new ParsingError("No connect address"));
         }
 
         commandBuilder.WithAddress(stream.MoveNext());
-
-        if (stream.IsLast)
-        {
-            return new CommandArgumentParseResult.Success(commandBuilder);
-        }
-
-        stream.MoveNext();
 
         return CallNext(stream, commandBuilder);
     }

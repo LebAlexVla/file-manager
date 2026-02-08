@@ -16,7 +16,12 @@ public class ConnectModeFlagParserLink : CommandArgumentParserLinkBase<ConnectCo
 
     public override CommandArgumentParseResult Parse(StringsStream stream, ConnectCommandBuilder commandBuilder)
     {
-        if (stream.Current == "-m")
+        if (stream.IsLast)
+        {
+            return new CommandArgumentParseResult.Success(commandBuilder);
+        }
+
+        if (stream.MoveNext() == "-m")
         {
             if (stream.IsLast)
             {
@@ -26,7 +31,12 @@ public class ConnectModeFlagParserLink : CommandArgumentParserLinkBase<ConnectCo
             ConnectModeParseResult result = _connectModeParserLink.Parse(stream.MoveNext());
             if (result is ConnectModeParseResult.Success(var connectMode))
             {
-                return new CommandArgumentParseResult.Success(commandBuilder.WithMode(connectMode));
+                commandBuilder.WithMode(connectMode);
+            }
+
+            if (stream.IsLast)
+            {
+                return new CommandArgumentParseResult.Success(commandBuilder);
             }
 
             if (result is ConnectModeParseResult.Failure(var error))

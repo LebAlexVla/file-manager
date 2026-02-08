@@ -16,7 +16,7 @@ public class TreeGotoParserLink : SubCommandParserLinkBase
 
     public override SubCommandParseResult Parse(StringsStream stream)
     {
-        if (stream.Current == "goto")
+        if (stream.MoveNext() == "goto")
         {
             var treeGotoCommandBuilder = new TreeGotoCommandBuilder();
             CommandArgumentParseResult result = _argumentsParserLink.Parse(stream, treeGotoCommandBuilder);

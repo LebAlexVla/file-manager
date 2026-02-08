@@ -8,7 +8,7 @@ public class FileCopySourcePathParserLink : CommandArgumentParserLinkBase<FileCo
 {
     public override CommandArgumentParseResult Parse(StringsStream stream, FileCopyCommandBuilder commandBuilder)
     {
-        if (!stream.IsLast)
+        if (stream.IsLast)
         {
             return new CommandArgumentParseResult.Failure(new ParsingError("No file copy source path"));
         }

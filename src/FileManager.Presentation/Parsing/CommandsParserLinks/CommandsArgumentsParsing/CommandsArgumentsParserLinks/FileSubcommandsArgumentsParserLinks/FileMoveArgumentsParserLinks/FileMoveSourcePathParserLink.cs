@@ -8,7 +8,7 @@ public class FileMoveSourcePathParserLink : CommandArgumentParserLinkBase<FileMo
 {
     public override CommandArgumentParseResult Parse(StringsStream stream, FileMoveCommandBuilder commandBuilder)
     {
-        if (!stream.IsLast)
+        if (stream.IsLast)
         {
             return new CommandArgumentParseResult.Failure(new ParsingError("No file move source path"));
         }

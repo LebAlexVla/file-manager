@@ -1,5 +1,4 @@
 using FileManager.Core.Commands.CommandsAdditions.ConnectModes;
-using FileManager.Core.Errors;
 
 namespace FileManager.Core.Commands.CommandBuilders;
 
@@ -23,18 +22,18 @@ public class ConnectCommandBuilder : ICommandBuilder
         return this;
     }
 
-    public CommandBuildResult Build()
+    public ICommand Build()
     {
         if (_address == null)
         {
-            return new CommandBuildResult.Failure(new BuildingError("Connect address is null"));
+            throw new ArgumentNullException($"address is null");
         }
 
         if (_connectMode == null)
         {
-            return new CommandBuildResult.Failure(new BuildingError("Connect mode is null"));
+            _connectMode = new LocalConnectMode();
         }
 
-        return new CommandBuildResult.Success(new ConnectCommand(_connectMode, _address));
+        return new ConnectCommand(_connectMode, _address);
     }
 }

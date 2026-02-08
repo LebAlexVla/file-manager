@@ -8,14 +8,27 @@ public class TreeListDepthFlagParserLink : CommandArgumentParserLinkBase<TreeLis
 {
     public override CommandArgumentParseResult Parse(StringsStream stream, TreeListCommandBuilder commandBuilder)
     {
-        if (stream.Current == "-d")
+        if (stream.IsLast)
+        {
+            return new CommandArgumentParseResult.Success(commandBuilder);
+        }
+
+        if (stream.MoveNext() == "-d")
         {
             if (stream.IsLast)
             {
                 return new CommandArgumentParseResult.Failure(new ParsingError("Lonely flag -d"));
             }
 
-            return new CommandArgumentParseResult.Success(commandBuilder.WithDepth(stream.MoveNext()));
+            if (!int.TryParse(stream.MoveNext(), out int depth))
+            {
+                return new CommandArgumentParseResult.Failure(new ParsingError("Wrong depth"));
+            }
+
+            if (stream.IsLast)
+            {
+                return new CommandArgumentParseResult.Success(commandBuilder.WithDepth(depth));
+            }
         }
 
         return CallNext(stream, commandBuilder);

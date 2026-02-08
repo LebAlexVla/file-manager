@@ -1,6 +1,5 @@
 using FileManager.Core.Commands.CommandsAdditions.TreeDrawing.TreeAssembler;
 using FileManager.Core.Commands.CommandsAdditions.Writing;
-using FileManager.Core.Errors;
 
 namespace FileManager.Core.Commands.CommandBuilders;
 
@@ -8,7 +7,7 @@ public class TreeListCommandBuilder : ICommandBuilder
 {
     private ITreeAssembler? _treeAssembler;
     private IWriter? _writer;
-    private string? _rawDepth;
+    private int? _depth;
 
     public TreeListCommandBuilder WithTreeAssembler(ITreeAssembler treeAssembler)
     {
@@ -24,14 +23,14 @@ public class TreeListCommandBuilder : ICommandBuilder
         return this;
     }
 
-    public TreeListCommandBuilder WithDepth(string rawDepth)
+    public TreeListCommandBuilder WithDepth(int depth)
     {
-        _rawDepth = rawDepth;
+        _depth = depth;
 
         return this;
     }
 
-    public CommandBuildResult Build()
+    public ICommand Build()
     {
         if (_treeAssembler == null)
         {
@@ -44,17 +43,11 @@ public class TreeListCommandBuilder : ICommandBuilder
             _writer = new ConsoleWriter();
         }
 
-        if (_rawDepth == null)
+        if (_depth == null)
         {
-            return new CommandBuildResult.Failure(
-                new BuildingError("You must call WithDepth first"));
+            _depth = 1;
         }
 
-        if (!int.TryParse(_rawDepth, out int depth))
-        {
-            return new CommandBuildResult.Failure(new BuildingError("Wrong depth"));
-        }
-
-        return new CommandBuildResult.Success(new TreeListCommand(_treeAssembler, _writer, depth));
+        return new TreeListCommand(_treeAssembler, _writer, _depth.Value);
     }
 }

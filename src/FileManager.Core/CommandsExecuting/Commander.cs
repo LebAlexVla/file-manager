@@ -1,7 +1,7 @@
 using FileManager.Core.Commands;
 using FileManager.Core.FileSystems;
 
-namespace FileManager.Core.Commander;
+namespace FileManager.Core.CommandsExecuting;
 
 public class Commander
 {

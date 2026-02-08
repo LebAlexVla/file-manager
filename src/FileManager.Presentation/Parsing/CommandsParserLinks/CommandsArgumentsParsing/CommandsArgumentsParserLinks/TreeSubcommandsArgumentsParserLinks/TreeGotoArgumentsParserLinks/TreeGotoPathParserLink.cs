@@ -10,7 +10,7 @@ public class TreeGotoPathParserLink : CommandArgumentParserLinkBase<TreeGotoComm
     {
         if (stream.IsLast)
         {
-            return new CommandArgumentParseResult.Failure(new ParsingError("No goto path"));
+            return new CommandArgumentParseResult.Failure(new ParsingError("Path not specified for command tree goto"));
         }
 
         commandBuilder.WithPath(stream.MoveNext());

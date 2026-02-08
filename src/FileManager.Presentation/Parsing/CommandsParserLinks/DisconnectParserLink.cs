@@ -10,7 +10,10 @@ public class DisconnectParserLink : CommandParserLinkBase
         {
             var commandBuilder = new DisconnectCommandBuilder();
 
-            return new CommandParseResult.Success(commandBuilder.Build());
+            if (stream.IsLast)
+            {
+                return new CommandParseResult.Success(commandBuilder.Build());
+            }
         }
 
         return CallNext(stream);

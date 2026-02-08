@@ -8,7 +8,7 @@ public class FileDeletePathParserLink : CommandArgumentParserLinkBase<FileDelete
 {
     public override CommandArgumentParseResult Parse(StringsStream stream, FileDeleteCommandBuilder commandBuilder)
     {
-        if (!stream.IsLast)
+        if (stream.IsLast)
         {
             return new CommandArgumentParseResult.Failure(new ParsingError("No file delete path"));
         }
