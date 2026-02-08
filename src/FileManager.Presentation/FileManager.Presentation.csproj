@@ -2,6 +2,7 @@
 
     <PropertyGroup>
         <RootNamespace>FileManager.Presentation</RootNamespace>
+        <OutputType>Exe</OutputType>
     </PropertyGroup>
 
     <ItemGroup>
