@@ -1,4 +1,4 @@
-namespace FileManager.Core.Commands.CommandsAdditions.TreeDrawing.Drawer;
+namespace FileManager.Core.Commands.CommandsAdditions.TreeDrawing.TreeAssembler;
 
 public interface IDrawingSymbolsBankFactory
 {

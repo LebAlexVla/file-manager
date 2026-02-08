@@ -1,5 +1,3 @@
-using FileManager.Core.Commands.CommandsAdditions.TreeDrawing.Drawer;
-
 namespace FileManager.Core.Commands.CommandsAdditions.TreeDrawing.TreeAssembler;
 
 public class StandardDrawingSymbolsBankFactory : IDrawingSymbolsBankFactory
