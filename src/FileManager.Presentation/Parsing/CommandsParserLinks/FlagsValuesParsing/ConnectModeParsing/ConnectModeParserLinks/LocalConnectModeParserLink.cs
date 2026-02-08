@@ -6,7 +6,7 @@ public class LocalConnectModeParserLink : ConnectModeParserLinkBase
 {
     public override ConnectModeParseResult Parse(string? rawConnectMode)
     {
-        if (rawConnectMode is null or "local")
+        if (rawConnectMode == "local")
         {
             return new ConnectModeParseResult.Success(new LocalConnectMode());
         }

@@ -22,10 +22,10 @@ public abstract class ConnectModeParserLinkBase : IConnectModeParserLink
         return this;
     }
 
-    protected ConnectModeParseResult CallNext(string rawMode)
+    protected ConnectModeParseResult CallNext(string? rawMode)
     {
         return _next?.Parse(rawMode)
                ?? new ConnectModeParseResult.Failure(
-                   new ParsingError("No connect mode parser link found"));
+                   new ParsingError("No such connect mode parser link found"));
     }
 }
