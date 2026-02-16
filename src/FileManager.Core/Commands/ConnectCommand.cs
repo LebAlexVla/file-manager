@@ -1,6 +1,6 @@
 using FileManager.Core.Commands.CommandsAdditions.ConnectModes;
+using FileManager.Core.CommandsExecuting;
 using FileManager.Core.Errors;
-using FileManager.Core.FileSystems;
 
 namespace FileManager.Core.Commands;
 
@@ -14,13 +14,13 @@ public class ConnectCommand : ICommand
         _connectMode.Path = address;
     }
 
-    public CommandResult Execute(IFileSystem? fileSystem, string? currentDirectory)
+    public CommandResult Execute(IContext context)
     {
-        fileSystem = _connectMode.Create();
+        context.FileSystem = _connectMode.Create();
 
-        if (fileSystem is not null)
+        if (context.FileSystem is not null)
         {
-            currentDirectory = fileSystem.RootPath;
+            context.CurrentDirectory = context.FileSystem.RootPath;
 
             return new CommandResult.Success();
         }

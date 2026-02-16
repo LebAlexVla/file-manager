@@ -1,8 +1,8 @@
-using FileManager.Core.FileSystems;
+using FileManager.Core.CommandsExecuting;
 
 namespace FileManager.Core.Commands;
 
 public interface ICommand
 {
-    CommandResult Execute(IFileSystem? fileSystem, string? currentDirectory);
+    CommandResult Execute(IContext context);
 }

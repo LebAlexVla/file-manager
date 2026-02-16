@@ -1,5 +1,5 @@
+using FileManager.Core.CommandsExecuting;
 using FileManager.Core.Errors;
-using FileManager.Core.FileSystems;
 
 namespace FileManager.Core.Commands;
 
@@ -12,14 +12,14 @@ public class TreeGotoCommand : ICommand
         _path = path;
     }
 
-    public CommandResult Execute(IFileSystem? fileSystem, string? currentDirectory)
+    public CommandResult Execute(IContext context)
     {
-        if (fileSystem is null || currentDirectory is null)
+        if (context.FileSystem is null || context.CurrentDirectory is null)
         {
             return new CommandResult.Failure(new ExecutingError("Problems with file system or current directory"));
         }
 
-        currentDirectory = fileSystem.UpdatePath(currentDirectory, _path);
+        context.CurrentDirectory = context.FileSystem.UpdatePath(context.CurrentDirectory, _path);
 
         return new CommandResult.Success();
     }

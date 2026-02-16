@@ -1,6 +1,6 @@
 using FileManager.Core.Commands.CommandsAdditions.Writing;
+using FileManager.Core.CommandsExecuting;
 using FileManager.Core.Errors;
-using FileManager.Core.FileSystems;
 
 namespace FileManager.Core.Commands;
 
@@ -15,15 +15,15 @@ public class FileShowCommand : ICommand
         _path = path;
     }
 
-    public CommandResult Execute(IFileSystem? fileSystem, string? currentDirectory)
+    public CommandResult Execute(IContext context)
     {
-        if (fileSystem is null || currentDirectory is null)
+        if (context.FileSystem is null || context.CurrentDirectory is null)
         {
             return new CommandResult.Failure(new ExecutingError("Problems with file system or current directory"));
         }
 
-        string newPath = fileSystem.UpdatePath(currentDirectory, _path);
-        string? content = fileSystem.ReadFile(newPath);
+        string newPath = context.FileSystem.UpdatePath(context.CurrentDirectory, _path);
+        string? content = context.FileSystem.ReadFile(newPath);
         if (content is null)
         {
             return new CommandResult.Failure(new ExecutingError("No content"));

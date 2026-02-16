@@ -1,8 +1,8 @@
 using FileManager.Core.Commands.CommandsAdditions.TreeDrawing.FileSystemComponentVisitors;
 using FileManager.Core.Commands.CommandsAdditions.TreeDrawing.TreeAssembler;
 using FileManager.Core.Commands.CommandsAdditions.Writing;
+using FileManager.Core.CommandsExecuting;
 using FileManager.Core.Errors;
-using FileManager.Core.FileSystems;
 
 namespace FileManager.Core.Commands;
 
@@ -21,14 +21,14 @@ public class TreeListCommand : ICommand
         _depth = depth;
     }
 
-    public CommandResult Execute(IFileSystem? fileSystem, string? currentDirectory)
+    public CommandResult Execute(IContext context)
     {
-        if (fileSystem is null || currentDirectory is null)
+        if (context.FileSystem is null || context.CurrentDirectory is null)
         {
             return new CommandResult.Failure(new ExecutingError("Problems with file system or current directory"));
         }
 
-        var treeVisitor = new FileSystemComponentVisitor(_depth, fileSystem, _treeAssembler);
+        var treeVisitor = new FileSystemComponentVisitor(_depth, context.FileSystem, _treeAssembler);
         string text = _treeAssembler.GetResult();
         _writer.Write(text);
 
