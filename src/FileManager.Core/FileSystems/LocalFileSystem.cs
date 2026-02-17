@@ -9,11 +9,26 @@ public class LocalFileSystem : IFileSystem
 
     public string RootPath { get; }
 
+    public bool FileExists(string path)
+    {
+        return File.Exists(path);
+    }
+
+    public bool DirectoryExists(string path)
+    {
+        return Directory.Exists(path);
+    }
+
     public string UpdatePath(string currentPath, string path)
     {
-        string newPath = Path.IsPathFullyQualified(path)
-            ? Path.Combine(RootPath, path.TrimStart(Path.DirectorySeparatorChar))
-            : Path.GetFullPath(Path.Combine(currentPath, path));
+        string newPath = path.StartsWith('/') ? path : Path.Combine(currentPath, path);
+
+        newPath = Path.GetFullPath(Path.Combine(RootPath, newPath.TrimStart('/')));
+
+        if (!newPath.StartsWith(RootPath, StringComparison.OrdinalIgnoreCase))
+        {
+            throw new InvalidOperationException("cannot navigate outside of connection root.");
+        }
 
         return newPath;
     }
@@ -60,7 +75,14 @@ public class LocalFileSystem : IFileSystem
 
     public void RenameFile(string path, string name)
     {
-        string newPath = UpdatePath(path, name);
+        string? directory = Path.GetDirectoryName(path);
+        if (directory == null)
+        {
+            throw new DirectoryNotFoundException();
+        }
+
+        string newPath = Path.Combine(directory, name);
+
         File.Move(path, newPath);
     }
 }

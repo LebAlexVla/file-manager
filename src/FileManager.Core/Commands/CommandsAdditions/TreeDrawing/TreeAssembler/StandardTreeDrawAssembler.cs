@@ -2,12 +2,12 @@ using System.Text;
 
 namespace FileManager.Core.Commands.CommandsAdditions.TreeDrawing.TreeAssembler;
 
-public class StandardTreeAssembler : ITreeAssembler
+public class StandardTreeDrawAssembler : ITreeDrawAssembler
 {
     private readonly StringBuilder _stringBuilder;
     private readonly DrawingSymbolsBank _symbolsBank;
 
-    public StandardTreeAssembler(DrawingSymbolsBank symbolsBank)
+    public StandardTreeDrawAssembler(DrawingSymbolsBank symbolsBank)
     {
         _stringBuilder = new StringBuilder();
         _symbolsBank = symbolsBank;

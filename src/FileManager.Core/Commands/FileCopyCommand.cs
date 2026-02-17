@@ -5,8 +5,8 @@ namespace FileManager.Core.Commands;
 
 public class FileCopyCommand : ICommand
 {
-    private readonly string _sourcePath;
-    private readonly string _destinationPath;
+    private string _sourcePath;
+    private string _destinationPath;
 
     public FileCopyCommand(string sourcePath, string destinationPath)
     {
@@ -21,7 +21,21 @@ public class FileCopyCommand : ICommand
             return new CommandResult.Failure(new ExecutingError("Problems with file system or current directory"));
         }
 
-        context.FileSystem.CopyFile(_sourcePath, _destinationPath);
+        try
+        {
+            _sourcePath = context.FileSystem.UpdatePath(context.CurrentDirectory, _sourcePath);
+            if (!context.FileSystem.FileExists(_sourcePath))
+            {
+                return new CommandResult.Failure(new ExecutingError("File not found"));
+            }
+
+            _destinationPath = context.FileSystem.UpdatePath(context.CurrentDirectory, _destinationPath);
+            context.FileSystem.CopyFile(_sourcePath, _destinationPath);
+        }
+        catch (Exception ex)
+        {
+            return new CommandResult.Failure(new ExecutingError(ex.Message));
+        }
 
         return new CommandResult.Success();
     }

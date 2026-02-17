@@ -5,7 +5,7 @@ namespace FileManager.Core.Commands;
 
 public class FileDeleteCommand : ICommand
 {
-    private readonly string _path;
+    private string _path;
 
     public FileDeleteCommand(string path)
     {
@@ -19,7 +19,20 @@ public class FileDeleteCommand : ICommand
             return new CommandResult.Failure(new ExecutingError("Problems with file system or current directory"));
         }
 
-        context.FileSystem.DeleteFile(_path);
+        try
+        {
+            _path = context.FileSystem.UpdatePath(context.CurrentDirectory, _path);
+            if (!context.FileSystem.FileExists(_path))
+            {
+                return new CommandResult.Failure(new ExecutingError("File not found"));
+            }
+
+            context.FileSystem.DeleteFile(_path);
+        }
+        catch (Exception ex)
+        {
+            return new CommandResult.Failure(new ExecutingError(ex.Message));
+        }
 
         return new CommandResult.Success();
     }

@@ -19,7 +19,20 @@ public class TreeGotoCommand : ICommand
             return new CommandResult.Failure(new ExecutingError("Problems with file system or current directory"));
         }
 
-        context.CurrentDirectory = context.FileSystem.UpdatePath(context.CurrentDirectory, _path);
+        try
+        {
+             string? directory = context.FileSystem.UpdatePath(context.CurrentDirectory, _path);
+             if (!context.FileSystem.DirectoryExists(directory))
+             {
+                 return new CommandResult.Failure(new ExecutingError("Directory does not exist"));
+             }
+
+             context.CurrentDirectory = directory;
+        }
+        catch (Exception ex)
+        {
+            return new CommandResult.Failure(new ExecutingError(ex.Message));
+        }
 
         return new CommandResult.Success();
     }

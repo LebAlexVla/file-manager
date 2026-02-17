@@ -1,58 +1,38 @@
 using FileManager.Core.Commands.CommandsAdditions.TreeDrawing.FileSystemComponents;
 using FileManager.Core.Commands.CommandsAdditions.TreeDrawing.TreeAssembler;
-using FileManager.Core.FileSystems;
 
 namespace FileManager.Core.Commands.CommandsAdditions.TreeDrawing.FileSystemComponentVisitors;
 
 public class FileSystemComponentVisitor : IFileSystemComponentVisitor
 {
-    private readonly ITreeAssembler _treeAssembler;
-    private readonly IFileSystem _fileSystem;
+    private readonly ITreeDrawAssembler _treeAssembler;
     private int _depth;
 
-    public FileSystemComponentVisitor(int depth, IFileSystem fileSystem, ITreeAssembler treeAssembler)
+    public FileSystemComponentVisitor(int depth, ITreeDrawAssembler treeAssembler)
     {
         _depth = depth;
-        _fileSystem = fileSystem;
         _treeAssembler = treeAssembler;
     }
 
-    public void Visit(FileFileSystemComponent component)
+    public void Visit(FileFileSystemComponent file)
     {
-        _treeAssembler.AssembleFile(component.Name, _depth);
+        _treeAssembler.AssembleFile(file.Name, _depth);
     }
 
-    public void Visit(DirectoryFileSystemComponent component)
+    public void Visit(DirectoryFileSystemComponent directory)
     {
-        _treeAssembler.AssembleDirectory(component.Name, _depth);
-
-        IEnumerable<string> directories = _fileSystem.EnumerateDirectories(component.Path);
-        IEnumerable<string> files = _fileSystem.EnumerateFiles(component.Path);
+        _treeAssembler.AssembleDirectory(directory.Name, _depth);
 
         if (_depth > 0)
         {
+            IEnumerable<IFileSystemComponent> children = directory.EnumerateChildren();
             _depth--;
-            foreach (string directory in directories)
+            foreach (IFileSystemComponent child in children)
             {
-                string? newDirectoryName = _fileSystem.GetDirectoryName(directory);
-                if (newDirectoryName != null)
-                {
-                    var newDirectory = new DirectoryFileSystemComponent(newDirectoryName, directory);
-                    Visit(newDirectory);
-                }
+                child.Accept(this);
             }
 
             _depth++;
-
-            foreach (string file in files)
-            {
-                string? newFileName = _fileSystem.GetFileName(file);
-                if (newFileName != null)
-                {
-                    var newFile = new FileFileSystemComponent(newFileName, file);
-                    Visit(newFile);
-                }
-            }
         }
     }
 }

@@ -1,3 +1,4 @@
+using FileManager.Core.Commands.CommandsAdditions.TreeDrawing.FileSystemComponents;
 using FileManager.Core.Commands.CommandsAdditions.TreeDrawing.FileSystemComponentVisitors;
 using FileManager.Core.Commands.CommandsAdditions.TreeDrawing.TreeAssembler;
 using FileManager.Core.Commands.CommandsAdditions.Writing;
@@ -8,13 +9,13 @@ namespace FileManager.Core.Commands;
 
 public class TreeListCommand : ICommand
 {
-    private readonly ITreeAssembler _treeAssembler;
+    private readonly ITreeDrawAssembler _treeAssembler;
 
     private readonly IWriter _writer;
 
     private readonly int _depth;
 
-    public TreeListCommand(ITreeAssembler treeAssembler, IWriter writer, int depth)
+    public TreeListCommand(ITreeDrawAssembler treeAssembler, IWriter writer, int depth)
     {
         _treeAssembler = treeAssembler;
         _writer = writer;
@@ -28,7 +29,24 @@ public class TreeListCommand : ICommand
             return new CommandResult.Failure(new ExecutingError("Problems with file system or current directory"));
         }
 
-        var treeVisitor = new FileSystemComponentVisitor(_depth, context.FileSystem, _treeAssembler);
+        try
+        {
+            var treeVisitor = new FileSystemComponentVisitor(_depth, _treeAssembler);
+            string? currentDirectoryName = context.FileSystem.GetFileName(context.CurrentDirectory);
+            if (currentDirectoryName is null)
+            {
+                return new CommandResult.Failure(new ExecutingError("Directory not found"));
+            }
+
+            treeVisitor.Visit(
+                new DirectoryFileSystemComponent(
+                    currentDirectoryName, context.CurrentDirectory, context.FileSystem));
+        }
+        catch (Exception ex)
+        {
+            return new CommandResult.Failure(new ExecutingError(ex.Message));
+        }
+
         string text = _treeAssembler.GetResult();
         _writer.Write(text);
 

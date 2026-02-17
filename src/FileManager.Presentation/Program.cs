@@ -1,3 +1,4 @@
+using FileManager.Core.Commands;
 using FileManager.Core.CommandsExecuting;
 using FileManager.Presentation.Parsing;
 
@@ -19,20 +20,19 @@ internal class Program
             {
                 string[] rawStrings = input.Split(' ');
                 var stream = new StringsStream(rawStrings);
-                CommandParseResult result = parser.Parse(stream);
+                CommandParseResult parseResult = parser.Parse(stream);
 
-                if (result is CommandParseResult.Success(var command))
+                if (parseResult is CommandParseResult.Success(var command))
                 {
-                    commander.Run(command);
+                    CommandResult runResult = commander.Run(command);
+                    if (runResult is CommandResult.Failure(var failure))
+                    {
+                        Console.WriteLine(failure.Info);
+                    }
                 }
 
-                if (result is CommandParseResult.Failure(var error))
+                if (parseResult is CommandParseResult.Failure(var error))
                 {
-                    foreach (string rawString in rawStrings)
-                    {
-                        Console.WriteLine(rawString);
-                    }
-
                     Console.WriteLine(error.Info);
                 }
             }

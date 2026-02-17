@@ -4,6 +4,10 @@ public interface IFileSystem
 {
     string RootPath { get; }
 
+    bool FileExists(string path);
+
+    bool DirectoryExists(string path);
+
     string UpdatePath(string currentPath, string path);
 
     string? GetDirectoryName(string path);

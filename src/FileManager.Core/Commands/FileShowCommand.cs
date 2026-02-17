@@ -22,8 +22,22 @@ public class FileShowCommand : ICommand
             return new CommandResult.Failure(new ExecutingError("Problems with file system or current directory"));
         }
 
-        string newPath = context.FileSystem.UpdatePath(context.CurrentDirectory, _path);
-        string? content = context.FileSystem.ReadFile(newPath);
+        string? content;
+        try
+        {
+            string newPath = context.FileSystem.UpdatePath(context.CurrentDirectory, _path);
+            if (!context.FileSystem.FileExists(newPath))
+            {
+                return new CommandResult.Failure(new ExecutingError("File not found"));
+            }
+
+            content = context.FileSystem.ReadFile(newPath);
+        }
+        catch (Exception ex)
+        {
+            return new CommandResult.Failure(new ExecutingError(ex.Message));
+        }
+
         if (content is null)
         {
             return new CommandResult.Failure(new ExecutingError("No content"));

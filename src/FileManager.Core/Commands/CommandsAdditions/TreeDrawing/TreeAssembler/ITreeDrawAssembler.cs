@@ -1,6 +1,6 @@
 namespace FileManager.Core.Commands.CommandsAdditions.TreeDrawing.TreeAssembler;
 
-public interface ITreeAssembler
+public interface ITreeDrawAssembler
 {
     void AssembleFile(string fileName, int depth);
 

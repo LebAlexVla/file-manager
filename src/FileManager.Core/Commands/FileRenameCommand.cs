@@ -5,8 +5,8 @@ namespace FileManager.Core.Commands;
 
 public class FileRenameCommand : ICommand
 {
-    private readonly string _path;
     private readonly string _name;
+    private string _path;
 
     public FileRenameCommand(string path, string name)
     {
@@ -21,7 +21,15 @@ public class FileRenameCommand : ICommand
             return new CommandResult.Failure(new ExecutingError("Problems with file system or current directory"));
         }
 
-        context.FileSystem.RenameFile(_path, _name);
+        try
+        {
+            _path = context.FileSystem.UpdatePath(context.CurrentDirectory, _path);
+            context.FileSystem.RenameFile(_path, _name);
+        }
+        catch (Exception ex)
+        {
+            return new CommandResult.Failure(new ExecutingError(ex.Message));
+        }
 
         return new CommandResult.Success();
     }

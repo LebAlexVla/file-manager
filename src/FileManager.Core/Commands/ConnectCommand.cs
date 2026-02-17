@@ -18,13 +18,18 @@ public class ConnectCommand : ICommand
     {
         context.FileSystem = _connectMode.Create();
 
-        if (context.FileSystem is not null)
+        if (context.FileSystem is null)
         {
-            context.CurrentDirectory = context.FileSystem.RootPath;
-
-            return new CommandResult.Success();
+            return new CommandResult.Failure(new ExecutingError("Filesystem is null"));
         }
 
-        return new CommandResult.Failure(new ExecutingError("Filesystem is null"));
+        if (!context.FileSystem.DirectoryExists(context.FileSystem.RootPath))
+        {
+            return new CommandResult.Failure(new ExecutingError("Directory does not exist"));
+        }
+
+        context.CurrentDirectory = context.FileSystem.RootPath;
+
+        return new CommandResult.Success();
     }
 }

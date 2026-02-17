@@ -5,11 +5,11 @@ namespace FileManager.Core.Commands.CommandBuilders;
 
 public class TreeListCommandBuilder : ICommandBuilder
 {
-    private ITreeAssembler? _treeAssembler;
+    private ITreeDrawAssembler? _treeAssembler;
     private IWriter? _writer;
     private int? _depth;
 
-    public TreeListCommandBuilder WithTreeAssembler(ITreeAssembler treeAssembler)
+    public TreeListCommandBuilder WithTreeAssembler(ITreeDrawAssembler treeAssembler)
     {
         _treeAssembler = treeAssembler;
 
@@ -35,7 +35,7 @@ public class TreeListCommandBuilder : ICommandBuilder
         if (_treeAssembler == null)
         {
             var bankFactory = new StandardDrawingSymbolsBankFactory();
-            _treeAssembler = new StandardTreeAssembler(bankFactory.Create());
+            _treeAssembler = new StandardTreeDrawAssembler(bankFactory.Create());
         }
 
         if (_writer == null)

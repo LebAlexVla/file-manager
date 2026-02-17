@@ -4,7 +4,7 @@ namespace FileManager.Core.Commands.CommandsAdditions.TreeDrawing.FileSystemComp
 
 public interface IFileSystemComponentVisitor
 {
-    void Visit(FileFileSystemComponent component);
+    void Visit(FileFileSystemComponent file);
 
-    void Visit(DirectoryFileSystemComponent component);
+    void Visit(DirectoryFileSystemComponent directory);
 }
