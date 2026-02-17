@@ -21,13 +21,13 @@ public class TreeGotoCommand : ICommand
 
         try
         {
-             string? directory = context.FileSystem.UpdatePath(context.CurrentDirectory, _path);
-             if (!context.FileSystem.DirectoryExists(directory))
-             {
-                 return new CommandResult.Failure(new ExecutingError("Directory does not exist"));
-             }
+            string directory = context.FileSystem.UpdatePath(context.CurrentDirectory, _path);
+            if (!context.FileSystem.DirectoryExists(directory))
+            {
+                return new CommandResult.Failure(new ExecutingError("Directory does not exist"));
+            }
 
-             context.CurrentDirectory = directory;
+            context.CurrentDirectory = directory;
         }
         catch (Exception ex)
         {
