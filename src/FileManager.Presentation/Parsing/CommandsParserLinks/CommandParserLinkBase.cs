@@ -1,5 +1,3 @@
-using FileManager.Core.Errors;
-
 namespace FileManager.Presentation.Parsing.CommandsParserLinks;
 
 public abstract class CommandParserLinkBase : ICommandParserLink

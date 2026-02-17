@@ -1,6 +1,6 @@
-namespace FileManager.Core.Errors;
+namespace FileManager.Presentation.Parsing;
 
-public class ParsingError : IError
+public class ParsingError
 {
     public ParsingError(string info)
     {

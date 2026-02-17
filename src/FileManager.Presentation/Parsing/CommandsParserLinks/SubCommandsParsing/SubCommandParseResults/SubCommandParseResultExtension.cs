@@ -1,5 +1,3 @@
-using FileManager.Core.Errors;
-
 namespace FileManager.Presentation.Parsing.CommandsParserLinks.SubCommandsParsing.SubCommandParseResults;
 
 public static class SubCommandParseResultExtension

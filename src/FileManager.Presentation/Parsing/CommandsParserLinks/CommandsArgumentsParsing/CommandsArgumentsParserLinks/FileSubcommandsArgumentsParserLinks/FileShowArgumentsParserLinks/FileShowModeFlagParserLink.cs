@@ -1,5 +1,4 @@
 using FileManager.Core.Commands.CommandBuilders;
-using FileManager.Core.Errors;
 using FileManager.Presentation.Parsing.CommandsParserLinks.CommandsArgumentsParsing.CommandArgumentParseResults;
 using FileManager.Presentation.Parsing.CommandsParserLinks.FlagsValuesParsing.FileShowModeParsing;
 

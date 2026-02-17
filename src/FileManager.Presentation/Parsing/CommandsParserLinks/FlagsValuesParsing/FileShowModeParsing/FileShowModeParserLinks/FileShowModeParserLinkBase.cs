@@ -1,5 +1,3 @@
-using FileManager.Core.Errors;
-
 namespace FileManager.Presentation.Parsing.CommandsParserLinks.FlagsValuesParsing.FileShowModeParsing.FileShowModeParserLinks;
 
 public abstract class FileShowModeParserLinkBase : IFileShowModeParserLink

@@ -1,4 +1,3 @@
-using FileManager.Core.Errors;
 using FileManager.Presentation.Parsing.CommandsParserLinks.SubCommandsParsing.SubCommandParseResults;
 
 namespace FileManager.Presentation.Parsing.CommandsParserLinks.SubCommandsParsing;

@@ -1,5 +1,3 @@
-using FileManager.Core.Errors;
-
 namespace FileManager.Presentation.Parsing.CommandsParserLinks.FlagsValuesParsing.ConnectModeParsing.ConnectModeParserLinks;
 
 public abstract class ConnectModeParserLinkBase : IConnectModeParserLink
