@@ -1,0 +1,30 @@
+using FileManager.Core.Commands.CommandBuilders;
+
+namespace FileManager.Presentation.Parsing.ParsingAbstractions.Arguments;
+
+public abstract class CommandArgumentParserLinkBase<T> : ICommandArgumentParserLink<T> where T : ICommandBuilder
+{
+    private ICommandArgumentParserLink<T>? _next;
+
+    public abstract CommandArgumentParseResult Parse(StringsIterator iterator, T commandBuilder);
+
+    public ICommandArgumentParserLink<T> AddNext(ICommandArgumentParserLink<T> parserLink)
+    {
+        if (_next == null)
+        {
+            _next = parserLink;
+        }
+        else
+        {
+            _next.AddNext(parserLink);
+        }
+
+        return this;
+    }
+
+    protected CommandArgumentParseResult CallNext(StringsIterator iterator, T commandBuilder)
+    {
+        return _next?.Parse(iterator, commandBuilder)
+               ?? new CommandArgumentParseResult.Failure(new ParsingError("Invalid argument parser link"));
+    }
+}

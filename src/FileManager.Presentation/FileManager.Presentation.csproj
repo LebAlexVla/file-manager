@@ -2,6 +2,15 @@
 
     <PropertyGroup>
         <RootNamespace>FileManager.Presentation</RootNamespace>
+        <OutputType>Exe</OutputType>
     </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\FileManager.Core\FileManager.Core.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Parsing\CommandsParsing\File\FlagsValues\" />
+    </ItemGroup>
 
 </Project>
