@@ -4,18 +4,18 @@ namespace FileManager.Presentation.Parsing.CommandsParserLinks;
 
 public class DisconnectParserLink : CommandParserLinkBase
 {
-    public override CommandParseResult Parse(StringsStream stream)
+    public override CommandParseResult Parse(StringsIterator iterator)
     {
-        if (stream.Current == "disconnect")
+        if (iterator.Current == "disconnect")
         {
             var commandBuilder = new DisconnectCommandBuilder();
 
-            if (stream.IsLast)
+            if (iterator.IsLast)
             {
                 return new CommandParseResult.Success(commandBuilder.Build());
             }
         }
 
-        return CallNext(stream);
+        return CallNext(iterator);
     }
 }

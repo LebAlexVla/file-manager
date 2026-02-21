@@ -4,5 +4,5 @@ namespace FileManager.Presentation.Parsing.CommandsParserLinks.SubCommandsParsin
 
 public interface ISubCommandParserService
 {
-    SubCommandParseResult Parse(StringsStream stream);
+    SubCommandParseResult Parse(StringsIterator iterator);
 }

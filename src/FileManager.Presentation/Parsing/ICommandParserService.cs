@@ -2,5 +2,5 @@ namespace FileManager.Presentation.Parsing;
 
 public interface ICommandParserService
 {
-    CommandParseResult Parse(StringsStream stream);
+    CommandParseResult Parse(StringsIterator iterator);
 }

@@ -5,15 +5,15 @@ namespace FileManager.Presentation.Parsing.CommandsParserLinks.CommandsArguments
 
 public class FileMoveSourcePathParserLink : CommandArgumentParserLinkBase<FileMoveCommandBuilder>
 {
-    public override CommandArgumentParseResult Parse(StringsStream stream, FileMoveCommandBuilder commandBuilder)
+    public override CommandArgumentParseResult Parse(StringsIterator iterator, FileMoveCommandBuilder commandBuilder)
     {
-        if (stream.IsLast)
+        if (iterator.IsLast)
         {
             return new CommandArgumentParseResult.Failure(new ParsingError("No file move source path"));
         }
 
-        commandBuilder.WithSourcePath(stream.MoveNext());
+        commandBuilder.WithSourcePath(iterator.MoveNext());
 
-        return CallNext(stream, commandBuilder);
+        return CallNext(iterator, commandBuilder);
     }
 }

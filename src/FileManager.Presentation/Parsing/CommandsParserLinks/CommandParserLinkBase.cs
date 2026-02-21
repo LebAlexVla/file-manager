@@ -4,7 +4,7 @@ public abstract class CommandParserLinkBase : ICommandParserLink
 {
     private ICommandParserLink? _next;
 
-    public abstract CommandParseResult Parse(StringsStream stream);
+    public abstract CommandParseResult Parse(StringsIterator iterator);
 
     public ICommandParserLink AddNext(ICommandParserLink parserLink)
     {
@@ -20,8 +20,8 @@ public abstract class CommandParserLinkBase : ICommandParserLink
         return this;
     }
 
-    protected CommandParseResult CallNext(StringsStream stream)
+    protected CommandParseResult CallNext(StringsIterator iterator)
     {
-        return _next?.Parse(stream) ?? new CommandParseResult.Failure(new ParsingError("No parser link found"));
+        return _next?.Parse(iterator) ?? new CommandParseResult.Failure(new ParsingError("No parser link found"));
     }
 }

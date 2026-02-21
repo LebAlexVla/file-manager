@@ -14,16 +14,16 @@ public class TreeListParserLink : SubCommandParserLinkBase
         _argumentsParserLink = argumentsParserLink;
     }
 
-    public override SubCommandParseResult Parse(StringsStream stream)
+    public override SubCommandParseResult Parse(StringsIterator iterator)
     {
-        if (stream.Current == "list")
+        if (iterator.Current == "list")
         {
             var treelistCommandBuilder = new TreeListCommandBuilder();
-            CommandArgumentParseResult result = _argumentsParserLink.Parse(stream, treelistCommandBuilder);
+            CommandArgumentParseResult result = _argumentsParserLink.Parse(iterator, treelistCommandBuilder);
 
             return result.ThenSubCommand();
         }
 
-        return CallNext(stream);
+        return CallNext(iterator);
     }
 }

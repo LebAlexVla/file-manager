@@ -7,7 +7,7 @@ public abstract class CommandArgumentParserLinkBase<T> : ICommandArgumentParserL
 {
     private ICommandArgumentParserLink<T>? _next;
 
-    public abstract CommandArgumentParseResult Parse(StringsStream stream, T commandBuilder);
+    public abstract CommandArgumentParseResult Parse(StringsIterator iterator, T commandBuilder);
 
     public ICommandArgumentParserLink<T> AddNext(ICommandArgumentParserLink<T> parserLink)
     {
@@ -23,9 +23,9 @@ public abstract class CommandArgumentParserLinkBase<T> : ICommandArgumentParserL
         return this;
     }
 
-    protected CommandArgumentParseResult CallNext(StringsStream stream, T commandBuilder)
+    protected CommandArgumentParseResult CallNext(StringsIterator iterator, T commandBuilder)
     {
-        return _next?.Parse(stream, commandBuilder)
+        return _next?.Parse(iterator, commandBuilder)
                ?? new CommandArgumentParseResult.Failure(new ParsingError("Invalid argument parser link"));
     }
 }

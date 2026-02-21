@@ -14,16 +14,16 @@ public class FileDeleteParserLink : SubCommandParserLinkBase
         _argumentsParserLink = argumentsParserLink;
     }
 
-    public override SubCommandParseResult Parse(StringsStream stream)
+    public override SubCommandParseResult Parse(StringsIterator iterator)
     {
-        if (stream.Current == "delete")
+        if (iterator.Current == "delete")
         {
             var fileDeleteCommandBuilder = new FileDeleteCommandBuilder();
-            CommandArgumentParseResult result = _argumentsParserLink.Parse(stream, fileDeleteCommandBuilder);
+            CommandArgumentParseResult result = _argumentsParserLink.Parse(iterator, fileDeleteCommandBuilder);
 
             return result.ThenSubCommand();
         }
 
-        return CallNext(stream);
+        return CallNext(iterator);
     }
 }

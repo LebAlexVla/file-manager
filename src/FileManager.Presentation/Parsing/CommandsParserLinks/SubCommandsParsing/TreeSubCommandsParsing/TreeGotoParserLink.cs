@@ -14,16 +14,16 @@ public class TreeGotoParserLink : SubCommandParserLinkBase
         _argumentsParserLink = argumentsParserLink;
     }
 
-    public override SubCommandParseResult Parse(StringsStream stream)
+    public override SubCommandParseResult Parse(StringsIterator iterator)
     {
-        if (stream.MoveNext() == "goto")
+        if (iterator.MoveNext() == "goto")
         {
             var treeGotoCommandBuilder = new TreeGotoCommandBuilder();
-            CommandArgumentParseResult result = _argumentsParserLink.Parse(stream, treeGotoCommandBuilder);
+            CommandArgumentParseResult result = _argumentsParserLink.Parse(iterator, treeGotoCommandBuilder);
 
             return result.ThenSubCommand();
         }
 
-        return CallNext(stream);
+        return CallNext(iterator);
     }
 }

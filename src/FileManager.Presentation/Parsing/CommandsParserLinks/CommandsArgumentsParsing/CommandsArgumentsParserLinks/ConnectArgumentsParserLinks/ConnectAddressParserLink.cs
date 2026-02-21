@@ -5,15 +5,15 @@ namespace FileManager.Presentation.Parsing.CommandsParserLinks.CommandsArguments
 
 public class ConnectAddressParserLink : CommandArgumentParserLinkBase<ConnectCommandBuilder>
 {
-    public override CommandArgumentParseResult Parse(StringsStream stream, ConnectCommandBuilder commandBuilder)
+    public override CommandArgumentParseResult Parse(StringsIterator iterator, ConnectCommandBuilder commandBuilder)
     {
-        if (stream.IsLast)
+        if (iterator.IsLast)
         {
             return new CommandArgumentParseResult.Failure(new ParsingError("No connect address"));
         }
 
-        commandBuilder.WithAddress(stream.MoveNext());
+        commandBuilder.WithAddress(iterator.MoveNext());
 
-        return CallNext(stream, commandBuilder);
+        return CallNext(iterator, commandBuilder);
     }
 }

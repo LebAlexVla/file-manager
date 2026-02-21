@@ -5,31 +5,31 @@ namespace FileManager.Presentation.Parsing.CommandsParserLinks.CommandsArguments
 
 public class TreeListDepthFlagParserLink : CommandArgumentParserLinkBase<TreeListCommandBuilder>
 {
-    public override CommandArgumentParseResult Parse(StringsStream stream, TreeListCommandBuilder commandBuilder)
+    public override CommandArgumentParseResult Parse(StringsIterator iterator, TreeListCommandBuilder commandBuilder)
     {
-        if (stream.IsLast)
+        if (iterator.IsLast)
         {
             return new CommandArgumentParseResult.Success(commandBuilder);
         }
 
-        if (stream.MoveNext() == "-d")
+        if (iterator.MoveNext() == "-d")
         {
-            if (stream.IsLast)
+            if (iterator.IsLast)
             {
                 return new CommandArgumentParseResult.Failure(new ParsingError("Lonely flag -d"));
             }
 
-            if (!int.TryParse(stream.MoveNext(), out int depth))
+            if (!int.TryParse(iterator.MoveNext(), out int depth))
             {
                 return new CommandArgumentParseResult.Failure(new ParsingError("Wrong depth"));
             }
 
-            if (stream.IsLast)
+            if (iterator.IsLast)
             {
                 return new CommandArgumentParseResult.Success(commandBuilder.WithDepth(depth));
             }
         }
 
-        return CallNext(stream, commandBuilder);
+        return CallNext(iterator, commandBuilder);
     }
 }

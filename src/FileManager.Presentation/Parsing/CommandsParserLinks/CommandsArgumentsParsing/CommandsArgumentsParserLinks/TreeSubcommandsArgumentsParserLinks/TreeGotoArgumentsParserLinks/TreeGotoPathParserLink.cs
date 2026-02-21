@@ -5,20 +5,20 @@ namespace FileManager.Presentation.Parsing.CommandsParserLinks.CommandsArguments
 
 public class TreeGotoPathParserLink : CommandArgumentParserLinkBase<TreeGotoCommandBuilder>
 {
-    public override CommandArgumentParseResult Parse(StringsStream stream, TreeGotoCommandBuilder commandBuilder)
+    public override CommandArgumentParseResult Parse(StringsIterator iterator, TreeGotoCommandBuilder commandBuilder)
     {
-        if (stream.IsLast)
+        if (iterator.IsLast)
         {
             return new CommandArgumentParseResult.Failure(new ParsingError("Path not specified for command tree goto"));
         }
 
-        commandBuilder.WithPath(stream.MoveNext());
+        commandBuilder.WithPath(iterator.MoveNext());
 
-        if (stream.IsLast)
+        if (iterator.IsLast)
         {
             return new CommandArgumentParseResult.Success(commandBuilder);
         }
 
-        return CallNext(stream, commandBuilder);
+        return CallNext(iterator, commandBuilder);
     }
 }

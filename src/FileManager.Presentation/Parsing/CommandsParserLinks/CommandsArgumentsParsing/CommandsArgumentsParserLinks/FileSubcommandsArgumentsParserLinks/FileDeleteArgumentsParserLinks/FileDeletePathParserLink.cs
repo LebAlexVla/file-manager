@@ -5,22 +5,22 @@ namespace FileManager.Presentation.Parsing.CommandsParserLinks.CommandsArguments
 
 public class FileDeletePathParserLink : CommandArgumentParserLinkBase<FileDeleteCommandBuilder>
 {
-    public override CommandArgumentParseResult Parse(StringsStream stream, FileDeleteCommandBuilder commandBuilder)
+    public override CommandArgumentParseResult Parse(StringsIterator iterator, FileDeleteCommandBuilder commandBuilder)
     {
-        if (stream.IsLast)
+        if (iterator.IsLast)
         {
             return new CommandArgumentParseResult.Failure(new ParsingError("No file delete path"));
         }
 
-        commandBuilder.WithPath(stream.MoveNext());
+        commandBuilder.WithPath(iterator.MoveNext());
 
-        if (stream.IsLast)
+        if (iterator.IsLast)
         {
             return new CommandArgumentParseResult.Success(commandBuilder);
         }
 
-        stream.MoveNext();
+        iterator.MoveNext();
 
-        return CallNext(stream, commandBuilder);
+        return CallNext(iterator, commandBuilder);
     }
 }

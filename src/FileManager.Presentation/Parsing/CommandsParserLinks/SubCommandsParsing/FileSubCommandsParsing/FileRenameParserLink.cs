@@ -14,16 +14,16 @@ public class FileRenameParserLink : SubCommandParserLinkBase
         _argumentsParserLink = argumentsParserLink;
     }
 
-    public override SubCommandParseResult Parse(StringsStream stream)
+    public override SubCommandParseResult Parse(StringsIterator iterator)
     {
-        if (stream.Current == "rename")
+        if (iterator.Current == "rename")
         {
             var fileRenameCommandBuilder = new FileRenameCommandBuilder();
-            CommandArgumentParseResult result = _argumentsParserLink.Parse(stream, fileRenameCommandBuilder);
+            CommandArgumentParseResult result = _argumentsParserLink.Parse(iterator, fileRenameCommandBuilder);
 
             return result.ThenSubCommand();
         }
 
-        return CallNext(stream);
+        return CallNext(iterator);
     }
 }

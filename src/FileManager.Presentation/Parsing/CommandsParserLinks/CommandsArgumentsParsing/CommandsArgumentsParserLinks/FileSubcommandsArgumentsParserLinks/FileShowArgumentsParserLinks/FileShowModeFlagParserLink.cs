@@ -13,22 +13,22 @@ public class FileShowModeFlagParserLink : CommandArgumentParserLinkBase<FileShow
         _fileShowModeParserLink = fileShowModeParserLink;
     }
 
-    public override CommandArgumentParseResult Parse(StringsStream stream, FileShowCommandBuilder commandBuilder)
+    public override CommandArgumentParseResult Parse(StringsIterator iterator, FileShowCommandBuilder commandBuilder)
     {
-        if (stream.Current == "-m")
+        if (iterator.Current == "-m")
         {
-            if (stream.IsLast)
+            if (iterator.IsLast)
             {
                 return new CommandArgumentParseResult.Failure(new ParsingError("Lonely flag -m"));
             }
 
-            FileShowModeParseResult result = _fileShowModeParserLink.Parse(stream.MoveNext());
+            FileShowModeParseResult result = _fileShowModeParserLink.Parse(iterator.MoveNext());
             if (result is FileShowModeParseResult.Success(var fileShowMode))
             {
                 commandBuilder.WithFileWriter(fileShowMode);
             }
 
-            if (stream.IsLast)
+            if (iterator.IsLast)
             {
                 return new CommandArgumentParseResult.Success(commandBuilder);
             }
@@ -39,6 +39,6 @@ public class FileShowModeFlagParserLink : CommandArgumentParserLinkBase<FileShow
             }
         }
 
-        return CallNext(stream, commandBuilder);
+        return CallNext(iterator, commandBuilder);
     }
 }

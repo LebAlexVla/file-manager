@@ -1,12 +1,12 @@
 namespace FileManager.Presentation.Parsing;
 
-public class StringsStream
+public class StringsIterator
 {
     private readonly string[] _strings;
 
     private int _index;
 
-    public StringsStream(string[] tokens)
+    public StringsIterator(string[] tokens)
     {
         _strings = tokens;
         _index = 0;

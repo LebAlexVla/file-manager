@@ -13,16 +13,16 @@ public class ConnectParserLink : CommandParserLinkBase
         _argumentsParserLink = commandArgumentParserLink;
     }
 
-    public override CommandParseResult Parse(StringsStream stream)
+    public override CommandParseResult Parse(StringsIterator iterator)
     {
-        if (stream.Current == "connect")
+        if (iterator.Current == "connect")
         {
             var connectCommandBuilder = new ConnectCommandBuilder();
-            CommandArgumentParseResult result = _argumentsParserLink.Parse(stream, connectCommandBuilder);
+            CommandArgumentParseResult result = _argumentsParserLink.Parse(iterator, connectCommandBuilder);
 
             return result.ThenCommand();
         }
 
-        return CallNext(stream);
+        return CallNext(iterator);
     }
 }

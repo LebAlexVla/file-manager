@@ -19,7 +19,7 @@ internal class Program
             if (input != null)
             {
                 string[] rawStrings = input.Split(' ');
-                var stream = new StringsStream(rawStrings);
+                var stream = new StringsIterator(rawStrings);
                 CommandParseResult parseResult = parser.Parse(stream);
 
                 if (parseResult is CommandParseResult.Success(var command))

@@ -12,19 +12,19 @@ public class TreeCommandsParserLink : CommandParserLinkBase
         _subCommandParserLink = subCommandParserLink;
     }
 
-    public override CommandParseResult Parse(StringsStream stream)
+    public override CommandParseResult Parse(StringsIterator iterator)
     {
-        if (stream.Current == "tree")
+        if (iterator.Current == "tree")
         {
-            if (stream.IsLast)
+            if (iterator.IsLast)
             {
                 return new CommandParseResult.Failure(
                     new ParsingError("Lonely tree command"));
             }
 
-            return _subCommandParserLink.Parse(stream).Then();
+            return _subCommandParserLink.Parse(iterator).Then();
         }
 
-        return CallNext(stream);
+        return CallNext(iterator);
     }
 }

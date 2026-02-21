@@ -5,22 +5,22 @@ namespace FileManager.Presentation.Parsing.CommandsParserLinks.CommandsArguments
 
 public class FileCopyDestinationPathParserLink : CommandArgumentParserLinkBase<FileCopyCommandBuilder>
 {
-    public override CommandArgumentParseResult Parse(StringsStream stream, FileCopyCommandBuilder commandBuilder)
+    public override CommandArgumentParseResult Parse(StringsIterator iterator, FileCopyCommandBuilder commandBuilder)
     {
-        if (stream.IsLast)
+        if (iterator.IsLast)
         {
             return new CommandArgumentParseResult.Failure(new ParsingError("No file copy destination path"));
         }
 
-        commandBuilder.WithDestinationPath(stream.MoveNext());
+        commandBuilder.WithDestinationPath(iterator.MoveNext());
 
-        if (stream.IsLast)
+        if (iterator.IsLast)
         {
             return new CommandArgumentParseResult.Success(commandBuilder);
         }
 
-        stream.MoveNext();
+        iterator.MoveNext();
 
-        return CallNext(stream, commandBuilder);
+        return CallNext(iterator, commandBuilder);
     }
 }

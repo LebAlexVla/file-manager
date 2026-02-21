@@ -14,16 +14,16 @@ public class FileMoveParserLink : SubCommandParserLinkBase
         _argumentsParserLink = argumentsParserLink;
     }
 
-    public override SubCommandParseResult Parse(StringsStream stream)
+    public override SubCommandParseResult Parse(StringsIterator iterator)
     {
-        if (stream.Current == "move")
+        if (iterator.Current == "move")
         {
             var fileMoveCommandBuilder = new FileMoveCommandBuilder();
-            CommandArgumentParseResult result = _argumentsParserLink.Parse(stream, fileMoveCommandBuilder);
+            CommandArgumentParseResult result = _argumentsParserLink.Parse(iterator, fileMoveCommandBuilder);
 
             return result.ThenSubCommand();
         }
 
-        return CallNext(stream);
+        return CallNext(iterator);
     }
 }

@@ -5,22 +5,22 @@ namespace FileManager.Presentation.Parsing.CommandsParserLinks.CommandsArguments
 
 public class FileShowPathParserLink : CommandArgumentParserLinkBase<FileShowCommandBuilder>
 {
-    public override CommandArgumentParseResult Parse(StringsStream stream, FileShowCommandBuilder commandBuilder)
+    public override CommandArgumentParseResult Parse(StringsIterator iterator, FileShowCommandBuilder commandBuilder)
     {
-        if (stream.IsLast)
+        if (iterator.IsLast)
         {
             return new CommandArgumentParseResult.Failure(new ParsingError("No file show path"));
         }
 
-        commandBuilder.WithPath(stream.MoveNext());
+        commandBuilder.WithPath(iterator.MoveNext());
 
-        if (stream.IsLast)
+        if (iterator.IsLast)
         {
             return new CommandArgumentParseResult.Success(commandBuilder);
         }
 
-        stream.MoveNext();
+        iterator.MoveNext();
 
-        return CallNext(stream, commandBuilder);
+        return CallNext(iterator, commandBuilder);
     }
 }

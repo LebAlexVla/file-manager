@@ -14,16 +14,16 @@ public class FileCopyParserLink : SubCommandParserLinkBase
         _argumentsParserLink = argumentsParserLink;
     }
 
-    public override SubCommandParseResult Parse(StringsStream stream)
+    public override SubCommandParseResult Parse(StringsIterator iterator)
     {
-        if (stream.Current == "copy")
+        if (iterator.Current == "copy")
         {
             var fileCopyCommandBuilder = new FileCopyCommandBuilder();
-            CommandArgumentParseResult result = _argumentsParserLink.Parse(stream, fileCopyCommandBuilder);
+            CommandArgumentParseResult result = _argumentsParserLink.Parse(iterator, fileCopyCommandBuilder);
 
             return result.ThenSubCommand();
         }
 
-        return CallNext(stream);
+        return CallNext(iterator);
     }
 }

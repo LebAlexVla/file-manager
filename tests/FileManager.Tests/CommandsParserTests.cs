@@ -317,7 +317,7 @@ public class CommandsParserTests
     {
         var parserFactory = new ParserFactory();
         ICommandParserLink parser = parserFactory.Create();
-        var stream = new StringsStream(args);
+        var stream = new StringsIterator(args);
 
         return parser.Parse(stream);
     }

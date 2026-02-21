@@ -6,7 +6,7 @@ public abstract class SubCommandParserLinkBase : ISubCommandParserLink
 {
     private ISubCommandParserLink? _next;
 
-    public abstract SubCommandParseResult Parse(StringsStream stream);
+    public abstract SubCommandParseResult Parse(StringsIterator iterator);
 
     public ISubCommandParserLink AddNext(ISubCommandParserLink link)
     {
@@ -22,9 +22,9 @@ public abstract class SubCommandParserLinkBase : ISubCommandParserLink
         return this;
     }
 
-    protected SubCommandParseResult CallNext(StringsStream stream)
+    protected SubCommandParseResult CallNext(StringsIterator iterator)
     {
-        return _next?.Parse(stream)
+        return _next?.Parse(iterator)
                ?? new SubCommandParseResult.Failure(new ParsingError("Invalid subcommand parser link"));
     }
 }

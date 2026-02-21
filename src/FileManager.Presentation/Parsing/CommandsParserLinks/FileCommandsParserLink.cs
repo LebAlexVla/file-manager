@@ -12,21 +12,21 @@ public class FileCommandsParserLink : CommandParserLinkBase
         _subCommandParserLink = subCommandParserLink;
     }
 
-    public override CommandParseResult Parse(StringsStream stream)
+    public override CommandParseResult Parse(StringsIterator iterator)
     {
-        if (stream.Current == "file")
+        if (iterator.Current == "file")
         {
-            if (stream.IsLast)
+            if (iterator.IsLast)
             {
                 return new CommandParseResult.Failure(
                     new ParsingError("Lonely file command"));
             }
 
-            stream.MoveNext();
+            iterator.MoveNext();
 
-            return _subCommandParserLink.Parse(stream).Then();
+            return _subCommandParserLink.Parse(iterator).Then();
         }
 
-        return CallNext(stream);
+        return CallNext(iterator);
     }
 }

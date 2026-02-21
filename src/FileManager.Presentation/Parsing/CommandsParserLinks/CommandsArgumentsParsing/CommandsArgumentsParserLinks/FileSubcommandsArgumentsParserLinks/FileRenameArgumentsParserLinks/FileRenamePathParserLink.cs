@@ -5,15 +5,15 @@ namespace FileManager.Presentation.Parsing.CommandsParserLinks.CommandsArguments
 
 public class FileRenamePathParserLink : CommandArgumentParserLinkBase<FileRenameCommandBuilder>
 {
-    public override CommandArgumentParseResult Parse(StringsStream stream, FileRenameCommandBuilder commandBuilder)
+    public override CommandArgumentParseResult Parse(StringsIterator iterator, FileRenameCommandBuilder commandBuilder)
     {
-        if (stream.IsLast)
+        if (iterator.IsLast)
         {
             return new CommandArgumentParseResult.Failure(new ParsingError("No file rename path"));
         }
 
-        commandBuilder.WithPath(stream.MoveNext());
+        commandBuilder.WithPath(iterator.MoveNext());
 
-        return CallNext(stream, commandBuilder);
+        return CallNext(iterator, commandBuilder);
     }
 }

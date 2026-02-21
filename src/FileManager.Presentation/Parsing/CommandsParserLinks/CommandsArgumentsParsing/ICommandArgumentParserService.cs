@@ -5,5 +5,5 @@ namespace FileManager.Presentation.Parsing.CommandsParserLinks.CommandsArguments
 
 public interface ICommandArgumentParserService<T> where T : ICommandBuilder
 {
-    CommandArgumentParseResult Parse(StringsStream stream, T commandBuilder);
+    CommandArgumentParseResult Parse(StringsIterator iterator, T commandBuilder);
 }

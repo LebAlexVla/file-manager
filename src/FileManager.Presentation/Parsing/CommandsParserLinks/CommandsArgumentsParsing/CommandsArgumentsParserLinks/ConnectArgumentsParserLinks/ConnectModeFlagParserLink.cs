@@ -13,27 +13,27 @@ public class ConnectModeFlagParserLink : CommandArgumentParserLinkBase<ConnectCo
         _connectModeParserLink = connectModeParserLink;
     }
 
-    public override CommandArgumentParseResult Parse(StringsStream stream, ConnectCommandBuilder commandBuilder)
+    public override CommandArgumentParseResult Parse(StringsIterator iterator, ConnectCommandBuilder commandBuilder)
     {
-        if (stream.IsLast)
+        if (iterator.IsLast)
         {
             return new CommandArgumentParseResult.Success(commandBuilder);
         }
 
-        if (stream.MoveNext() == "-m")
+        if (iterator.MoveNext() == "-m")
         {
-            if (stream.IsLast)
+            if (iterator.IsLast)
             {
                 return new CommandArgumentParseResult.Failure(new ParsingError("Lonely flag -m"));
             }
 
-            ConnectModeParseResult result = _connectModeParserLink.Parse(stream.MoveNext());
+            ConnectModeParseResult result = _connectModeParserLink.Parse(iterator.MoveNext());
             if (result is ConnectModeParseResult.Success(var connectMode))
             {
                 commandBuilder.WithMode(connectMode);
             }
 
-            if (stream.IsLast)
+            if (iterator.IsLast)
             {
                 return new CommandArgumentParseResult.Success(commandBuilder);
             }
@@ -44,6 +44,6 @@ public class ConnectModeFlagParserLink : CommandArgumentParserLinkBase<ConnectCo
             }
         }
 
-        return CallNext(stream, commandBuilder);
+        return CallNext(iterator, commandBuilder);
     }
 }
