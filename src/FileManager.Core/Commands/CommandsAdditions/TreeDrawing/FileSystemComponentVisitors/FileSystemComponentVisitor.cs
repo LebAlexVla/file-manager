@@ -23,16 +23,18 @@ public class FileSystemComponentVisitor : IFileSystemComponentVisitor
     {
         _treeAssembler.AssembleDirectory(directory.Name, _depth);
 
-        if (_depth > 0)
+        if (_depth <= 0)
         {
-            IEnumerable<IFileSystemComponent> children = directory.EnumerateChildren();
-            _depth--;
-            foreach (IFileSystemComponent child in children)
-            {
-                child.Accept(this);
-            }
-
-            _depth++;
+            return;
         }
+
+        IEnumerable<IFileSystemComponent> children = directory.EnumerateChildren();
+        _depth--;
+        foreach (IFileSystemComponent child in children)
+        {
+            child.Accept(this);
+        }
+
+        _depth++;
     }
 }

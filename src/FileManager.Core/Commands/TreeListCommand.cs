@@ -3,6 +3,7 @@ using FileManager.Core.Commands.CommandsAdditions.TreeDrawing.FileSystemComponen
 using FileManager.Core.Commands.CommandsAdditions.TreeDrawing.TreeAssembler;
 using FileManager.Core.Commands.CommandsAdditions.Writing;
 using FileManager.Core.CommandsExecuting;
+using FileManager.Core.CommandsExecuting.State;
 using FileManager.Core.Errors;
 
 namespace FileManager.Core.Commands;
@@ -22,30 +23,24 @@ public class TreeListCommand : ICommand
         _depth = depth;
     }
 
-    public CommandResult Execute(IContext context)
+    public CommandResult Execute(Context context)
     {
-        if (context.FileSystem is null || context.CurrentDirectory is null)
+        if (context.State is not ConnectedState connectedState)
         {
-            return new CommandResult.Failure(new ExecutingError("Problems with file system or current directory"));
+            return new CommandResult.Failure(new ExecutingError("Not connected"));
         }
 
-        try
+        var treeVisitor = new FileSystemComponentVisitor(_depth, _treeAssembler);
+        string? currentDirectoryName = connectedState.FileSystem.GetFileName(
+            connectedState.CurrentDirectory);
+        if (currentDirectoryName is null)
         {
-            var treeVisitor = new FileSystemComponentVisitor(_depth, _treeAssembler);
-            string? currentDirectoryName = context.FileSystem.GetFileName(context.CurrentDirectory);
-            if (currentDirectoryName is null)
-            {
-                return new CommandResult.Failure(new ExecutingError("Directory not found"));
-            }
+            return new CommandResult.Failure(new ExecutingError("Directory not found"));
+        }
 
-            treeVisitor.Visit(
-                new DirectoryFileSystemComponent(
-                    currentDirectoryName, context.CurrentDirectory, context.FileSystem));
-        }
-        catch (Exception ex)
-        {
-            return new CommandResult.Failure(new ExecutingError(ex.Message));
-        }
+        treeVisitor.Visit(
+            new DirectoryFileSystemComponent(
+                currentDirectoryName, connectedState.CurrentDirectory, connectedState.FileSystem));
 
         string text = _treeAssembler.GetResult();
         _writer.Write(text);

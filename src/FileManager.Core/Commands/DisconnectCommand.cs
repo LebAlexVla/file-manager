@@ -1,18 +1,22 @@
 using FileManager.Core.CommandsExecuting;
+using FileManager.Core.CommandsExecuting.State;
 using FileManager.Core.Errors;
 
 namespace FileManager.Core.Commands;
 
 public class DisconnectCommand : ICommand
 {
-    public CommandResult Execute(IContext context)
+    public CommandResult Execute(Context context)
     {
-        if (context.FileSystem is null || context.CurrentDirectory is null)
+        if (context.State is DisconnectedState)
         {
-            return new CommandResult.Failure(new ExecutingError("Problems with file system or current directory"));
+            return new CommandResult.Failure(new ExecutingError("Already disconnected"));
         }
 
-        context.FileSystem = null;
+        if (!context.TryDisconnect())
+        {
+            return new CommandResult.Failure(new ExecutingError("Disconnection failed"));
+        }
 
         return new CommandResult.Success();
     }

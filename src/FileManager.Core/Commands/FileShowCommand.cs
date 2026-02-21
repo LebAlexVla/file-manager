@@ -1,13 +1,15 @@
 using FileManager.Core.Commands.CommandsAdditions.Writing;
 using FileManager.Core.CommandsExecuting;
+using FileManager.Core.CommandsExecuting.State;
 using FileManager.Core.Errors;
+using FileManager.Core.FileSystems.Results;
 
 namespace FileManager.Core.Commands;
 
 public class FileShowCommand : ICommand
 {
     private readonly IWriter _writer;
-    private readonly string _path;
+    private string _path;
 
     public FileShowCommand(IWriter writer, string path)
     {
@@ -15,35 +17,38 @@ public class FileShowCommand : ICommand
         _path = path;
     }
 
-    public CommandResult Execute(IContext context)
+    public CommandResult Execute(Context context)
     {
-        if (context.FileSystem is null || context.CurrentDirectory is null)
+        if (context.State is not ConnectedState connectedState)
         {
-            return new CommandResult.Failure(new ExecutingError("Problems with file system or current directory"));
+            return new CommandResult.Failure(new ExecutingError("Not connected"));
         }
 
-        string? content;
-        try
+        UpdatePathResult updatePathResult = connectedState.FileSystem.UpdatePath(
+            connectedState.CurrentDirectory, _path);
+        switch (updatePathResult)
         {
-            string newPath = context.FileSystem.UpdatePath(context.CurrentDirectory, _path);
-            if (!context.FileSystem.FileExists(newPath))
-            {
-                return new CommandResult.Failure(new ExecutingError("File not found"));
-            }
-
-            content = context.FileSystem.ReadFile(newPath);
-        }
-        catch (Exception ex)
-        {
-            return new CommandResult.Failure(new ExecutingError(ex.Message));
+            case UpdatePathResult.Failure(var updateError):
+                return new CommandResult.Failure(updateError);
+            case UpdatePathResult.Success(var path):
+                _path = path;
+                break;
         }
 
-        if (content is null)
+        if (!connectedState.FileSystem.FileExists(_path))
         {
-            return new CommandResult.Failure(new ExecutingError("No content"));
+            return new CommandResult.Failure(new ExecutingError("File not found"));
         }
 
-        _writer.Write(content);
+        ReadFileResult readFileResult = connectedState.FileSystem.ReadFile(_path);
+        switch (readFileResult)
+        {
+            case ReadFileResult.Failure(var readError):
+                return new CommandResult.Failure(readError);
+            case ReadFileResult.Success(var content):
+                _writer.Write(content);
+                break;
+        }
 
         return new CommandResult.Success();
     }

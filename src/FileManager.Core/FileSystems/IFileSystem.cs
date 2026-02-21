@@ -1,3 +1,5 @@
+using FileManager.Core.FileSystems.Results;
+
 namespace FileManager.Core.FileSystems;
 
 public interface IFileSystem
@@ -8,7 +10,7 @@ public interface IFileSystem
 
     bool DirectoryExists(string path);
 
-    string UpdatePath(string currentPath, string path);
+    UpdatePathResult UpdatePath(string currentPath, string path);
 
     string? GetDirectoryName(string path);
 
@@ -18,13 +20,13 @@ public interface IFileSystem
 
     IEnumerable<string> EnumerateFiles(string path);
 
-    string? ReadFile(string path);
+    ReadFileResult ReadFile(string path);
 
-    void MoveFile(string sourcePath, string destinationPath);
+    MoveFileResult MoveFile(string sourcePath, string destinationPath);
 
-    void CopyFile(string sourcePath, string destinationPath);
+    CopyFileResult CopyFile(string sourcePath, string destinationPath);
 
-    void DeleteFile(string path);
+    DeleteFileResult DeleteFile(string path);
 
-    void RenameFile(string path, string name);
+    RenameFileResult RenameFile(string path, string name);
 }

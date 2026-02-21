@@ -8,7 +8,7 @@ internal class Program
 {
     private static void Main()
     {
-        var commander = new Commander();
+        var context = new Context();
         var parserFactory = new ParserFactory();
         ICommandParserLink parser = parserFactory.Create();
 
@@ -24,7 +24,7 @@ internal class Program
 
                 if (parseResult is CommandParseResult.Success(var command))
                 {
-                    CommandResult runResult = commander.Run(command);
+                    CommandResult runResult = command.Execute(context);
                     if (runResult is CommandResult.Failure(var failure))
                     {
                         Console.WriteLine(failure.Info);

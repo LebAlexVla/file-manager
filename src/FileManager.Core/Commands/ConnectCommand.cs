@@ -1,5 +1,6 @@
 using FileManager.Core.Commands.CommandsAdditions.ConnectModes;
 using FileManager.Core.CommandsExecuting;
+using FileManager.Core.CommandsExecuting.State;
 using FileManager.Core.Errors;
 
 namespace FileManager.Core.Commands;
@@ -7,28 +8,25 @@ namespace FileManager.Core.Commands;
 public class ConnectCommand : ICommand
 {
     private readonly IConnectMode _connectMode;
+    private readonly string _address;
 
     public ConnectCommand(IConnectMode connectMode, string address)
     {
         _connectMode = connectMode;
-        _connectMode.Path = address;
+        _address = address;
     }
 
-    public CommandResult Execute(IContext context)
+    public CommandResult Execute(Context context)
     {
-        context.FileSystem = _connectMode.Create();
-
-        if (context.FileSystem is null)
+        if (context.State is ConnectedState)
         {
-            return new CommandResult.Failure(new ExecutingError("Filesystem is null"));
+            return new CommandResult.Failure(new ExecutingError("Already connected"));
         }
 
-        if (!context.FileSystem.DirectoryExists(context.FileSystem.RootPath))
+        if (!context.TryConnect(_connectMode.Create(_address), _address))
         {
-            return new CommandResult.Failure(new ExecutingError("Directory does not exist"));
+            return new CommandResult.Failure(new ExecutingError("Connection failed"));
         }
-
-        context.CurrentDirectory = context.FileSystem.RootPath;
 
         return new CommandResult.Success();
     }

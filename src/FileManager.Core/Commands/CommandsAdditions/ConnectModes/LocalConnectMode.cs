@@ -4,10 +4,8 @@ namespace FileManager.Core.Commands.CommandsAdditions.ConnectModes;
 
 public class LocalConnectMode : IConnectMode
 {
-    public string? Path { get; set; }
-
-    public IFileSystem? Create()
+    public IFileSystem Create(string address)
     {
-        return Path != null ? new LocalFileSystem(Path) : null;
+        return new LocalFileSystem(address);
     }
 }

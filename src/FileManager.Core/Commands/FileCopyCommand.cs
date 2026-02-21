@@ -1,5 +1,7 @@
 using FileManager.Core.CommandsExecuting;
+using FileManager.Core.CommandsExecuting.State;
 using FileManager.Core.Errors;
+using FileManager.Core.FileSystems.Results;
 
 namespace FileManager.Core.Commands;
 
@@ -14,27 +16,40 @@ public class FileCopyCommand : ICommand
         _destinationPath = destinationPath;
     }
 
-    public CommandResult Execute(IContext context)
+    public CommandResult Execute(Context context)
     {
-        if (context.FileSystem is null || context.CurrentDirectory is null)
+        if (context.State is not ConnectedState connectedState)
         {
-            return new CommandResult.Failure(new ExecutingError("Problems with file system or current directory"));
+            return new CommandResult.Failure(new ExecutingError("Not connected"));
         }
 
-        try
+        UpdatePathResult updatePathResult = connectedState.FileSystem.UpdatePath(
+            connectedState.CurrentDirectory, _sourcePath);
+        switch (updatePathResult)
         {
-            _sourcePath = context.FileSystem.UpdatePath(context.CurrentDirectory, _sourcePath);
-            if (!context.FileSystem.FileExists(_sourcePath))
-            {
-                return new CommandResult.Failure(new ExecutingError("File not found"));
-            }
-
-            _destinationPath = context.FileSystem.UpdatePath(context.CurrentDirectory, _destinationPath);
-            context.FileSystem.CopyFile(_sourcePath, _destinationPath);
+            case UpdatePathResult.Failure(var error):
+                return new CommandResult.Failure(error);
+            case UpdatePathResult.Success(var path):
+                _sourcePath = path;
+                break;
         }
-        catch (Exception ex)
+
+        updatePathResult = connectedState.FileSystem.UpdatePath(
+            connectedState.CurrentDirectory, _destinationPath);
+        switch (updatePathResult)
         {
-            return new CommandResult.Failure(new ExecutingError(ex.Message));
+            case UpdatePathResult.Failure(var updateError):
+                return new CommandResult.Failure(updateError);
+            case UpdatePathResult.Success(var path):
+                _destinationPath = path;
+                break;
+        }
+
+        CopyFileResult copyFileResult = connectedState.FileSystem.CopyFile(
+            _sourcePath, _destinationPath);
+        if (copyFileResult is CopyFileResult.Failure(var copyError))
+        {
+            return new CommandResult.Failure(copyError);
         }
 
         return new CommandResult.Success();

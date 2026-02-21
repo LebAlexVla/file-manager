@@ -4,5 +4,5 @@ namespace FileManager.Core.Commands;
 
 public interface ICommand
 {
-    CommandResult Execute(IContext context);
+    CommandResult Execute(Context context);
 }

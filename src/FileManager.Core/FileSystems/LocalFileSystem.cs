@@ -1,3 +1,6 @@
+using FileManager.Core.Errors;
+using FileManager.Core.FileSystems.Results;
+
 namespace FileManager.Core.FileSystems;
 
 public class LocalFileSystem : IFileSystem
@@ -19,18 +22,27 @@ public class LocalFileSystem : IFileSystem
         return Directory.Exists(path);
     }
 
-    public string UpdatePath(string currentPath, string path)
+    public UpdatePathResult UpdatePath(string currentPath, string path)
     {
-        string newPath = path.StartsWith('/') ? path : Path.Combine(currentPath, path);
+        string newPath;
+        try
+        {
+            newPath = path.StartsWith('/') ? path : Path.Combine(currentPath, path);
 
-        newPath = Path.GetFullPath(Path.Combine(RootPath, newPath.TrimStart('/')));
+            newPath = Path.GetFullPath(Path.Combine(RootPath, newPath.TrimStart('/')));
+        }
+        catch (Exception ex)
+        {
+            return new UpdatePathResult.Failure(new ExecutingError(ex.Message));
+        }
 
         if (!newPath.StartsWith(RootPath, StringComparison.OrdinalIgnoreCase))
         {
-            throw new InvalidOperationException("cannot navigate outside of connection root.");
+            return new UpdatePathResult.Failure(
+                new ExecutingError("Cannot navigate outside of connection root"));
         }
 
-        return newPath;
+        return new UpdatePathResult.Success(newPath);
     }
 
     public string? GetDirectoryName(string path)
@@ -53,36 +65,82 @@ public class LocalFileSystem : IFileSystem
         return Directory.EnumerateFiles(path);
     }
 
-    public string? ReadFile(string path)
+    public ReadFileResult ReadFile(string path)
     {
-        return File.Exists(path) ? File.ReadAllText(path) : null;
+        string content;
+        try
+        {
+            content = File.ReadAllText(path);
+        }
+        catch (Exception ex)
+        {
+            return new ReadFileResult.Failure(new ExecutingError(ex.Message));
+        }
+
+        return new ReadFileResult.Success(content);
     }
 
-    public void MoveFile(string sourcePath, string destinationPath)
+    public MoveFileResult MoveFile(string sourcePath, string destinationPath)
     {
-        File.Move(sourcePath, destinationPath);
+        try
+        {
+            File.Move(sourcePath, destinationPath);
+        }
+        catch (Exception ex)
+        {
+            return new MoveFileResult.Failure(new ExecutingError(ex.Message));
+        }
+
+        return new MoveFileResult.Success();
     }
 
-    public void CopyFile(string sourcePath, string destinationPath)
+    public CopyFileResult CopyFile(string sourcePath, string destinationPath)
     {
-        File.Copy(sourcePath, destinationPath);
+        try
+        {
+            File.Copy(sourcePath, destinationPath);
+        }
+        catch (Exception ex)
+        {
+            return new CopyFileResult.Failure(new ExecutingError(ex.Message));
+        }
+
+        return new CopyFileResult.Success();
     }
 
-    public void DeleteFile(string path)
+    public DeleteFileResult DeleteFile(string path)
     {
-        File.Delete(path);
+        try
+        {
+            File.Delete(path);
+        }
+        catch (Exception ex)
+        {
+            return new DeleteFileResult.Failure(new ExecutingError(ex.Message));
+        }
+
+        return new DeleteFileResult.Success();
     }
 
-    public void RenameFile(string path, string name)
+    public RenameFileResult RenameFile(string path, string name)
     {
         string? directory = Path.GetDirectoryName(path);
         if (directory == null)
         {
-            throw new DirectoryNotFoundException();
+            return new RenameFileResult.Failure(new ExecutingError("Directory not found"));
         }
 
         string newPath = Path.Combine(directory, name);
 
-        File.Move(path, newPath);
+        try
+        {
+            File.Move(path, newPath);
+        }
+        catch (Exception ex)
+        {
+            return new RenameFileResult.Failure(new ExecutingError(ex.Message));
+        }
+
+        return new RenameFileResult.Success();
     }
 }
