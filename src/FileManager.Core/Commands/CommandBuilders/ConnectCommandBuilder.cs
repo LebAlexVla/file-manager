@@ -4,7 +4,7 @@ namespace FileManager.Core.Commands.CommandBuilders;
 
 public class ConnectCommandBuilder : ICommandBuilder
 {
-    private string? _address;
+    private string _address = string.Empty;
 
     private IConnectMode? _connectMode;
 
@@ -24,15 +24,7 @@ public class ConnectCommandBuilder : ICommandBuilder
 
     public ICommand Build()
     {
-        if (_address == null)
-        {
-            throw new ArgumentNullException($"address is null");
-        }
-
-        if (_connectMode == null)
-        {
-            _connectMode = new LocalConnectMode();
-        }
+        _connectMode ??= new LocalConnectMode();
 
         return new ConnectCommand(_connectMode, _address);
     }

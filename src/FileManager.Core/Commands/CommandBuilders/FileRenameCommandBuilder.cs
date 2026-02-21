@@ -2,8 +2,8 @@ namespace FileManager.Core.Commands.CommandBuilders;
 
 public class FileRenameCommandBuilder : ICommandBuilder
 {
-    private string? _path;
-    private string? _name;
+    private string _path = string.Empty;
+    private string _name = string.Empty;
 
     public FileRenameCommandBuilder WithPath(string path)
     {
@@ -21,11 +21,6 @@ public class FileRenameCommandBuilder : ICommandBuilder
 
     public ICommand Build()
     {
-        if (_path is null || _name is null)
-        {
-            throw new ArgumentNullException();
-        }
-
         return new FileRenameCommand(_path, _name);
     }
 }

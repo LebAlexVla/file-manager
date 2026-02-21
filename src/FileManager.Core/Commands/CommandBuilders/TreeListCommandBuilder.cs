@@ -38,15 +38,8 @@ public class TreeListCommandBuilder : ICommandBuilder
             _treeAssembler = new StandardTreeDrawAssembler(bankFactory.Create());
         }
 
-        if (_writer == null)
-        {
-            _writer = new ConsoleWriter();
-        }
-
-        if (_depth == null)
-        {
-            _depth = 1;
-        }
+        _writer ??= new ConsoleWriter();
+        _depth ??= 1;
 
         return new TreeListCommand(_treeAssembler, _writer, _depth.Value);
     }

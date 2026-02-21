@@ -2,8 +2,8 @@ namespace FileManager.Core.Commands.CommandBuilders;
 
 public class FileCopyCommandBuilder : ICommandBuilder
 {
-    private string? _sourcePath;
-    private string? _destinationPath;
+    private string _sourcePath = string.Empty;
+    private string _destinationPath = string.Empty;
 
     public FileCopyCommandBuilder WithSourcePath(string path)
     {
@@ -21,11 +21,6 @@ public class FileCopyCommandBuilder : ICommandBuilder
 
     public ICommand Build()
     {
-        if (_sourcePath is null || _destinationPath is null)
-        {
-            throw new ArgumentNullException();
-        }
-
         return new FileCopyCommand(_sourcePath, _destinationPath);
     }
 }

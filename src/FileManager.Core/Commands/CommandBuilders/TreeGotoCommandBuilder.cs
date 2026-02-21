@@ -2,7 +2,7 @@ namespace FileManager.Core.Commands.CommandBuilders;
 
 public class TreeGotoCommandBuilder : ICommandBuilder
 {
-    private string? _path;
+    private string _path = string.Empty;
 
     public TreeGotoCommandBuilder WithPath(string path)
     {
@@ -13,11 +13,6 @@ public class TreeGotoCommandBuilder : ICommandBuilder
 
     public ICommand Build()
     {
-        if (string.IsNullOrEmpty(_path))
-        {
-            throw new ArgumentNullException();
-        }
-
         return new TreeGotoCommand(_path);
     }
 }

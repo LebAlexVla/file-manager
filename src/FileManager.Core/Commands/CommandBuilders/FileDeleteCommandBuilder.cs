@@ -2,7 +2,7 @@ namespace FileManager.Core.Commands.CommandBuilders;
 
 public class FileDeleteCommandBuilder : ICommandBuilder
 {
-    private string? _path;
+    private string _path = string.Empty;
 
     public FileDeleteCommandBuilder WithPath(string path)
     {
@@ -13,11 +13,6 @@ public class FileDeleteCommandBuilder : ICommandBuilder
 
     public ICommand Build()
     {
-        if (_path is null)
-        {
-            throw new ArgumentNullException();
-        }
-
         return new FileDeleteCommand(_path);
     }
 }
