@@ -1,8 +1,9 @@
 using FileManager.Core.Commands.CommandBuilders;
-using FileManager.Presentation.Parsing.CommandsParserLinks;
-using FileManager.Presentation.Parsing.CommandsParserLinks.CommandsArgumentsParsing;
-using FileManager.Presentation.Parsing.CommandsParserLinks.CommandsArgumentsParsing.CommandsArgumentsParserLinks.ConnectArgumentsParserLinks;
-using FileManager.Presentation.Parsing.CommandsParserLinks.FlagsValuesParsing.ConnectModeParsing.ConnectModeParserLinks;
+using FileManager.Presentation.Parsing.CommandsParsing.Connect;
+using FileManager.Presentation.Parsing.CommandsParsing.Connect.Arguments;
+using FileManager.Presentation.Parsing.CommandsParsing.Connect.ConnectMode.ModeParsers;
+using FileManager.Presentation.Parsing.ParsingAbstractions.Arguments;
+using FileManager.Presentation.Parsing.ParsingAbstractions.Commands;
 
 namespace FileManager.Presentation.Parsing.CommandsParsersFactories;
 

@@ -1,7 +1,8 @@
-using FileManager.Presentation.Parsing.CommandsParserLinks;
-using FileManager.Presentation.Parsing.CommandsParserLinks.CommandsArgumentsParsing.CommandsArgumentsParserLinks.TreeSubcommandsArgumentsParserLinks.TreeGotoArgumentsParserLinks;
-using FileManager.Presentation.Parsing.CommandsParserLinks.CommandsArgumentsParsing.CommandsArgumentsParserLinks.TreeSubcommandsArgumentsParserLinks.TreeListArgumentsParserLinks;
-using FileManager.Presentation.Parsing.CommandsParserLinks.SubCommandsParsing.TreeSubCommandsParsing;
+using FileManager.Presentation.Parsing.CommandsParsing.Tree;
+using FileManager.Presentation.Parsing.CommandsParsing.Tree.Arguments.TreeGoto;
+using FileManager.Presentation.Parsing.CommandsParsing.Tree.Arguments.TreeList;
+using FileManager.Presentation.Parsing.CommandsParsing.Tree.SubCommands;
+using FileManager.Presentation.Parsing.ParsingAbstractions.Commands;
 
 namespace FileManager.Presentation.Parsing.CommandsParsersFactories;
 
