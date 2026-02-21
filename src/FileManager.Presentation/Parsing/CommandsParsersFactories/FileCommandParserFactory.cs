@@ -16,7 +16,7 @@ public class FileCommandParserFactory : ICommandParserFactory
         var fileShowParser = new FileShowParserLink(
             new FileShowPathParserLink().AddNext(
                 new FileShowModeFlagParserLink(
-                    new ConsoleFileShowModeParserLink())));
+                    new ConsoleFileShowModeParser())));
 
         var fileMoveParser = new FileMoveParserLink(
             new FileMoveSourcePathParserLink().AddNext(

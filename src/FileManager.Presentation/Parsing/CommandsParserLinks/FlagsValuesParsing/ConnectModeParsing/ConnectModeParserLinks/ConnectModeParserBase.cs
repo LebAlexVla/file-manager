@@ -1,20 +1,20 @@
 namespace FileManager.Presentation.Parsing.CommandsParserLinks.FlagsValuesParsing.ConnectModeParsing.ConnectModeParserLinks;
 
-public abstract class ConnectModeParserLinkBase : IConnectModeParserLink
+public abstract class ConnectModeParserBase : IConnectModeParser
 {
-    private IConnectModeParserLink? _next;
+    private IConnectModeParser? _next;
 
     public abstract ConnectModeParseResult Parse(string? rawConnectMode);
 
-    public IConnectModeParserLink AddNext(IConnectModeParserLink parserLink)
+    public IConnectModeParser AddNext(IConnectModeParser parser)
     {
         if (_next == null)
         {
-            _next = parserLink;
+            _next = parser;
         }
         else
         {
-            _next = _next.AddNext(parserLink);
+            _next = _next.AddNext(parser);
         }
 
         return this;

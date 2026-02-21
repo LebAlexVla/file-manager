@@ -1,20 +1,20 @@
 namespace FileManager.Presentation.Parsing.CommandsParserLinks.FlagsValuesParsing.FileShowModeParsing.FileShowModeParserLinks;
 
-public abstract class FileShowModeParserLinkBase : IFileShowModeParserLink
+public abstract class FileShowModeParserBase : IFileShowModeParser
 {
-    private IFileShowModeParserLink? _next;
+    private IFileShowModeParser? _next;
 
     public abstract FileShowModeParseResult Parse(string? rawMode);
 
-    public IFileShowModeParserLink AddNext(IFileShowModeParserLink parserLink)
+    public IFileShowModeParser AddNext(IFileShowModeParser parser)
     {
         if (_next == null)
         {
-            _next = parserLink;
+            _next = parser;
         }
         else
         {
-            _next = _next.AddNext(parserLink);
+            _next = _next.AddNext(parser);
         }
 
         return this;

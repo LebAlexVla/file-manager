@@ -6,11 +6,11 @@ namespace FileManager.Presentation.Parsing.CommandsParserLinks.CommandsArguments
 
 public class ConnectModeFlagParserLink : CommandArgumentParserLinkBase<ConnectCommandBuilder>
 {
-    private readonly IConnectModeParserLink _connectModeParserLink;
+    private readonly IConnectModeParser _connectModeParser;
 
-    public ConnectModeFlagParserLink(IConnectModeParserLink connectModeParserLink)
+    public ConnectModeFlagParserLink(IConnectModeParser connectModeParser)
     {
-        _connectModeParserLink = connectModeParserLink;
+        _connectModeParser = connectModeParser;
     }
 
     public override CommandArgumentParseResult Parse(StringsIterator iterator, ConnectCommandBuilder commandBuilder)
@@ -27,7 +27,7 @@ public class ConnectModeFlagParserLink : CommandArgumentParserLinkBase<ConnectCo
                 return new CommandArgumentParseResult.Failure(new ParsingError("Lonely flag -m"));
             }
 
-            ConnectModeParseResult result = _connectModeParserLink.Parse(iterator.MoveNext());
+            ConnectModeParseResult result = _connectModeParser.Parse(iterator.MoveNext());
             if (result is ConnectModeParseResult.Success(var connectMode))
             {
                 commandBuilder.WithMode(connectMode);

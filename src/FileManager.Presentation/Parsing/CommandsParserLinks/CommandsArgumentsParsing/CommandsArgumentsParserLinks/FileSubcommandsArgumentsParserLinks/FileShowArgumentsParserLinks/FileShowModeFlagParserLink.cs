@@ -6,11 +6,11 @@ namespace FileManager.Presentation.Parsing.CommandsParserLinks.CommandsArguments
 
 public class FileShowModeFlagParserLink : CommandArgumentParserLinkBase<FileShowCommandBuilder>
 {
-    private readonly IFileShowModeParserLink _fileShowModeParserLink;
+    private readonly IFileShowModeParser _fileShowModeParser;
 
-    public FileShowModeFlagParserLink(IFileShowModeParserLink fileShowModeParserLink)
+    public FileShowModeFlagParserLink(IFileShowModeParser fileShowModeParser)
     {
-        _fileShowModeParserLink = fileShowModeParserLink;
+        _fileShowModeParser = fileShowModeParser;
     }
 
     public override CommandArgumentParseResult Parse(StringsIterator iterator, FileShowCommandBuilder commandBuilder)
@@ -22,7 +22,7 @@ public class FileShowModeFlagParserLink : CommandArgumentParserLinkBase<FileShow
                 return new CommandArgumentParseResult.Failure(new ParsingError("Lonely flag -m"));
             }
 
-            FileShowModeParseResult result = _fileShowModeParserLink.Parse(iterator.MoveNext());
+            FileShowModeParseResult result = _fileShowModeParser.Parse(iterator.MoveNext());
             if (result is FileShowModeParseResult.Success(var fileShowMode))
             {
                 commandBuilder.WithFileWriter(fileShowMode);

@@ -2,7 +2,7 @@ using FileManager.Core.Commands.CommandsAdditions.Writing;
 
 namespace FileManager.Presentation.Parsing.CommandsParserLinks.FlagsValuesParsing.FileShowModeParsing.FileShowModeParserLinks;
 
-public class ConsoleFileShowModeParserLink : FileShowModeParserLinkBase
+public class ConsoleFileShowModeParser : FileShowModeParserBase
 {
     public override FileShowModeParseResult Parse(string? rawMode)
     {

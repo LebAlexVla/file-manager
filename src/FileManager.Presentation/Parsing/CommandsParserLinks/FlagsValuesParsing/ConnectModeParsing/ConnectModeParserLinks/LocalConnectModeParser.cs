@@ -2,7 +2,7 @@ using FileManager.Core.Commands.CommandsAdditions.ConnectModes;
 
 namespace FileManager.Presentation.Parsing.CommandsParserLinks.FlagsValuesParsing.ConnectModeParsing.ConnectModeParserLinks;
 
-public class LocalConnectModeParserLink : ConnectModeParserLinkBase
+public class LocalConnectModeParser : ConnectModeParserBase
 {
     public override ConnectModeParseResult Parse(string? rawConnectMode)
     {

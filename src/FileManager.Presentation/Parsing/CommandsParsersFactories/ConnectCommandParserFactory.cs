@@ -13,7 +13,7 @@ public class ConnectCommandParserFactory : ICommandParserFactory
         ICommandArgumentParserLink<ConnectCommandBuilder> connectArgumentsChain =
             new ConnectAddressParserLink().AddNext(
                 new ConnectModeFlagParserLink(
-                    new LocalConnectModeParserLink()));
+                    new LocalConnectModeParser()));
 
         return new ConnectParserLink(connectArgumentsChain);
     }
