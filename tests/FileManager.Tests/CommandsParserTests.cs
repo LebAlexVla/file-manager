@@ -10,7 +10,7 @@ public class CommandsParserTests
     [Fact]
     public void ParseConnectWithAddressSuccess()
     {
-        CommandParseResult result = Parse(["connect", @"C:\Users\REDMI\Documents\ITMO\OOP"]);
+        CommandParseResult result = Parse(["connect", @"C:\Users\User\Documents\University\OOP"]);
 
         CommandParseResult.Success success = Assert.IsType<CommandParseResult.Success>(result);
         Assert.IsType<ConnectCommand>(success.Command);
@@ -27,7 +27,7 @@ public class CommandsParserTests
     [Fact]
     public void ParseConnectWithModeSuccess()
     {
-        CommandParseResult result = Parse(["connect", @"C:\Users\REDMI\Documents\ITMO\OOP", "-m", "local"]);
+        CommandParseResult result = Parse(["connect", @"C:\Users\User\Documents\University\OOP", "-m", "local"]);
 
         CommandParseResult.Success success = Assert.IsType<CommandParseResult.Success>(result);
         Assert.IsType<ConnectCommand>(success.Command);
@@ -36,7 +36,7 @@ public class CommandsParserTests
     [Fact]
     public void ParseConnectWithWasteFailure()
     {
-        CommandParseResult result = Parse(["connect", @"C:\Users\REDMI\Documents\ITMO\OOP", "-m", "local", "zzz"]);
+        CommandParseResult result = Parse(["connect", @"C:\Users\User\Documents\University\OOP", "-m", "local", "zzz"]);
 
         Assert.IsType<CommandParseResult.Failure>(result);
     }
@@ -61,7 +61,7 @@ public class CommandsParserTests
     [Fact]
     public void ParseTreeGotoWithPathSuccess()
     {
-        CommandParseResult result = Parse(["tree", "goto", @"C:\Users\REDMI\Documents\ITMO\OOP"]);
+        CommandParseResult result = Parse(["tree", "goto", @"C:\Users\User\Documents\University\OOP"]);
 
         CommandParseResult.Success success = Assert.IsType<CommandParseResult.Success>(result);
         Assert.IsType<TreeGotoCommand>(success.Command);
@@ -78,7 +78,7 @@ public class CommandsParserTests
     [Fact]
     public void ParseTreeGotoWithWasteFailure()
     {
-        CommandParseResult result = Parse(["tree", "goto", @"C:\Users\REDMI\Documents\ITMO\OOP", "zzz"]);
+        CommandParseResult result = Parse(["tree", "goto", @"C:\Users\User\Documents\University\OOP", "zzz"]);
 
         Assert.IsType<CommandParseResult.Failure>(result);
     }
@@ -123,7 +123,7 @@ public class CommandsParserTests
         CommandParseResult result = Parse([
             "file",
             "show",
-            @"C:\Users\REDMI\Documents\ITMO\OOP\lectures\behavioural-patterns.pdf"]);
+            @"C:\Users\User\Documents\University\OOP\lectures\behavioural-patterns.pdf"]);
 
         CommandParseResult.Success success = Assert.IsType<CommandParseResult.Success>(result);
         Assert.IsType<FileShowCommand>(success.Command);
@@ -143,7 +143,7 @@ public class CommandsParserTests
         CommandParseResult result = Parse([
             "file",
             "show",
-            @"C:\Users\REDMI\Documents\ITMO\OOP\lectures\behavioural-patterns.pdf",
+            @"C:\Users\User\Documents\University\OOP\lectures\behavioural-patterns.pdf",
             "-m",
             "console"]);
 
@@ -157,7 +157,7 @@ public class CommandsParserTests
         CommandParseResult result = Parse([
             "file",
             "show",
-            @"C:\Users\REDMI\Documents\ITMO\OOP\lectures\behavioural-patterns.pdf",
+            @"C:\Users\User\Documents\University\OOP\lectures\behavioural-patterns.pdf",
             "-m"]);
 
         Assert.IsType<CommandParseResult.Failure>(result);
@@ -169,7 +169,7 @@ public class CommandsParserTests
         CommandParseResult result = Parse([
             "file",
             "show",
-            @"C:\Users\REDMI\Documents\ITMO\OOP\lectures\behavioural-patterns.pdf",
+            @"C:\Users\User\Documents\University\OOP\lectures\behavioural-patterns.pdf",
             "-m",
             "console",
             "zzz"]);
@@ -183,8 +183,8 @@ public class CommandsParserTests
         CommandParseResult result = Parse([
             "file",
             "move",
-            @"C:\Users\REDMI\Documents\ITMO\OOP\lectures\behavioural-patterns.pdf",
-            @"C:\Users\REDMI\Documents\ITMO\OOP"]);
+            @"C:\Users\User\Documents\University\OOP\lectures\behavioural-patterns.pdf",
+            @"C:\Users\User\Documents\University\OOP"]);
 
         CommandParseResult.Success success = Assert.IsType<CommandParseResult.Success>(result);
         Assert.IsType<FileMoveCommand>(success.Command);
@@ -204,8 +204,8 @@ public class CommandsParserTests
         CommandParseResult result = Parse([
             "file",
             "move",
-            @"C:\Users\REDMI\Documents\ITMO\OOP\lectures\behavioural-patterns.pdf",
-            @"C:\Users\REDMI\Documents\ITMO\OOP",
+            @"C:\Users\User\Documents\University\OOP\lectures\behavioural-patterns.pdf",
+            @"C:\Users\User\Documents\University\OOP",
             "zzz"]);
 
         Assert.IsType<CommandParseResult.Failure>(result);
@@ -217,8 +217,8 @@ public class CommandsParserTests
         CommandParseResult result = Parse([
             "file",
             "copy",
-            @"C:\Users\REDMI\Documents\ITMO\OOP\lectures\behavioural-patterns.pdf",
-            @"C:\Users\REDMI\Documents\ITMO\OOP"]);
+            @"C:\Users\User\Documents\University\OOP\lectures\behavioural-patterns.pdf",
+            @"C:\Users\User\Documents\University\OOP"]);
 
         CommandParseResult.Success success = Assert.IsType<CommandParseResult.Success>(result);
         Assert.IsType<FileCopyCommand>(success.Command);
@@ -238,8 +238,8 @@ public class CommandsParserTests
         CommandParseResult result = Parse([
             "file",
             "copy",
-            @"C:\Users\REDMI\Documents\ITMO\OOP\lectures\behavioural-patterns.pdf",
-            @"C:\Users\REDMI\Documents\ITMO\OOP",
+            @"C:\Users\User\Documents\University\OOP\lectures\behavioural-patterns.pdf",
+            @"C:\Users\User\Documents\University\OOP",
             "zzz"]);
 
         Assert.IsType<CommandParseResult.Failure>(result);
@@ -251,7 +251,7 @@ public class CommandsParserTests
         CommandParseResult result = Parse([
             "file",
             "delete",
-            @"C:\Users\REDMI\Documents\ITMO\OOP\lectures\behavioural-patterns.pdf"]);
+            @"C:\Users\User\Documents\University\OOP\lectures\behavioural-patterns.pdf"]);
 
         CommandParseResult.Success success = Assert.IsType<CommandParseResult.Success>(result);
         Assert.IsType<FileDeleteCommand>(success.Command);
@@ -271,7 +271,7 @@ public class CommandsParserTests
         CommandParseResult result = Parse([
             "file",
             "delete",
-            @"C:\Users\REDMI\Documents\ITMO\OOP\lectures\behavioural-patterns.pdf",
+            @"C:\Users\User\Documents\University\OOP\lectures\behavioural-patterns.pdf",
             "zzz"]);
 
         Assert.IsType<CommandParseResult.Failure>(result);
@@ -283,7 +283,7 @@ public class CommandsParserTests
         CommandParseResult result = Parse([
             "file",
             "rename",
-            @"C:\Users\REDMI\Documents\ITMO\OOP\lectures\behavioural-patterns.pdf",
+            @"C:\Users\User\Documents\University\OOP\lectures\behavioural-patterns.pdf",
             "Behavioural-patterns.pdf"]);
 
         CommandParseResult.Success success = Assert.IsType<CommandParseResult.Success>(result);
@@ -296,7 +296,7 @@ public class CommandsParserTests
         CommandParseResult result = Parse([
             "file",
             "rename",
-            @"C:\Users\REDMI\Documents\ITMO\OOP\lectures\behavioural-patterns.pdf"]);
+            @"C:\Users\User\Documents\University\OOP\lectures\behavioural-patterns.pdf"]);
 
         Assert.IsType<CommandParseResult.Failure>(result);
     }
@@ -307,7 +307,7 @@ public class CommandsParserTests
         CommandParseResult result = Parse([
             "file",
             "rename",
-            @"C:\Users\REDMI\Documents\ITMO\OOP\lectures\behavioural-patterns.pdf",
+            @"C:\Users\User\Documents\University\OOP\lectures\behavioural-patterns.pdf",
             "Behavioural-patterns.pdf",
             "zzz"]);
 
